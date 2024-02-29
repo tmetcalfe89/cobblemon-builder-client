@@ -72,11 +72,11 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
             </ListItem>
           )}
         </List>}
-        <List sx={{ flexGrow: 1 }} disablePadding>
+        <List sx={{ flexGrow: 1, overflowY: "auto" }} disablePadding>
           {menu?.map(({ label, path }) =>
             <ListItem disablePadding key={label}>
               <ListItemButton component={Link} to={path}>
-                <ListItemText>{label}</ListItemText>
+                <ListItemText sx={{ textTransform: "capitalize" }}>{label}</ListItemText>
               </ListItemButton>
             </ListItem>
           )}

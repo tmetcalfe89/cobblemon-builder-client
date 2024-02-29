@@ -1,13 +1,13 @@
 import { IDBSchema } from "the-promised-indexeddb/types/types";
 
-const monsterSchema: IDBSchema = {
-  name: "monsters",
+const modelSchema: IDBSchema = {
+  name: "models",
   fields: {
     1: {
       name: { index: true, unique: true },
-      addonId: { index: true },
+      monsterId: { index: true },
     },
   },
 };
 
-export default monsterSchema;
+export default modelSchema;
