@@ -5,11 +5,9 @@ import AddonView from "./views/AddonView";
 import MonsterView from "./views/MonsterView";
 import darkTheme from "./theme";
 
-
-
 function App() {
   return (
-    <BrowserRouter basename="cobblemon-builder-client">
+    <BrowserRouter>
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Routes>
