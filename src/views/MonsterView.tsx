@@ -12,7 +12,7 @@ const monsterParts = ["animations", "models", "posers", "resolvers", "textures",
 export default function MonsterView() {
   const { addonId = "-1", monsterId = "-1" } = useParams();
   const { addon } = useAddon(+addonId);
-  const { monster, animations, uploadAnimation, models, uploadModel } = useMonster(+monsterId);
+  const { monster, animations, models } = useMonster(+monsterId);
 
   const menuHeaders = useMemo<MenuHeader[] | undefined>(() => (addon && monster) ? ([
     {
@@ -39,8 +39,8 @@ export default function MonsterView() {
     menu={menuItems}
   >
     <Routes>
-      <Route path="/animations" element={<AnimationsView onUpload={uploadAnimation} animations={animations} />} />
-      <Route path="/models" element={<ModelsView onUpload={uploadModel} models={models} />} />
+      <Route path="/animations" element={<AnimationsView onUpload={animations.createNew} animations={animations.list} />} />
+      <Route path="/models" element={<ModelsView onUpload={models.createNew} models={models.list} />} />
     </Routes>
   </Layout>
 }

@@ -1,3 +1,8 @@
+import { createAnimation, createModel } from "../api/indexeddb";
+import Animation from "../types/Animation";
+import AnimationFile from "../types/AnimationFile";
+import ModelFile from "../types/ModelFile";
+
 export const uploadJson = async <T extends object>(file: File): Promise<T> => {
   const abUploaded = await uploadFile(file);
   const decoder = new TextDecoder();
@@ -25,3 +30,30 @@ function uploadFile(file: File): Promise<ArrayBuffer> {
     reader.readAsArrayBuffer(file);
   });
 }
+
+export const uploadModel = async (file: File, monsterId: number) => {
+  const model = await uploadJson<ModelFile>(file);
+  const addedModel = await createModel({
+    model,
+    modelName: model["minecraft:geometry"][0].description.identifier,
+    monsterId,
+  });
+  return addedModel;
+};
+
+export const uploadAnimations = async (file: File, monsterId: number) => {
+  const animationData = await uploadJson<AnimationFile>(file);
+  const remappedAnimations: Animation[] = Object.entries(
+    animationData.animations
+  ).map(
+    ([animationFullName, animation]): Animation => ({
+      animation,
+      animationName: animationFullName.split(".").pop() || "missing",
+      monsterId,
+    })
+  );
+  const addedAnimations = await Promise.all(
+    remappedAnimations.map((animation) => createAnimation(animation))
+  );
+  return addedAnimations;
+};
