@@ -2,7 +2,7 @@ import { Close, House } from "@mui/icons-material";
 import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, TextField } from "@mui/material";
 import useBoolean from "../hooks/useBoolean";
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import ListItemLink from "./ListItemLink";
 
 export interface LayoutProps {
   menu?: MenuItem[];
@@ -56,28 +56,28 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
       <Stack direction="column" sx={{ height: "100%" }}>
         <List disablePadding>
           <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <ListItemButton component={Link} to="/">
+            <ListItemLink to="/">
               <ListItemIcon><House /></ListItemIcon>
               <ListItemText>CobbledBuilder</ListItemText>
-            </ListItemButton>
+            </ListItemLink>
           </ListItem>
         </List>
         {menuHeaders && <List disablePadding>
           {menuHeaders.map(({ icon, label, path }) =>
             <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <ListItemButton component={Link} to={path}>
+              <ListItemLink to={path}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText>{label}</ListItemText>
-              </ListItemButton>
+              </ListItemLink>
             </ListItem>
           )}
         </List>}
         <List sx={{ flexGrow: 1, overflowY: "auto" }} disablePadding>
           {menu?.map(({ label, path }) =>
             <ListItem disablePadding key={label}>
-              <ListItemButton component={Link} to={path}>
+              <ListItemLink to={path}>
                 <ListItemText sx={{ textTransform: "capitalize" }}>{label}</ListItemText>
-              </ListItemButton>
+              </ListItemLink>
             </ListItem>
           )}
         </List>

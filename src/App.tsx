@@ -1,14 +1,11 @@
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material"
+import { CssBaseline, ThemeProvider } from "@mui/material"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import AccountView from "./views/AccountView";
 import AddonView from "./views/AddonView";
 import MonsterView from "./views/MonsterView";
+import darkTheme from "./theme";
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
+
 
 function App() {
   return (
