@@ -9,6 +9,7 @@ export interface LayoutProps {
   children: React.ReactNode;
   onMiniFormSubmit?: (name: string) => Promise<boolean>;
   miniFormLabel?: string;
+  menuHeaders?: MenuHeader[];
 }
 
 export interface MenuItem {
@@ -16,7 +17,13 @@ export interface MenuItem {
   path: string;
 }
 
-export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children }: LayoutProps) {
+export interface MenuHeader {
+  label: string;
+  path: string;
+  icon: React.ReactNode;
+}
+
+export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children, menuHeaders }: LayoutProps) {
   const [miniFormOpen, { on: openMiniForm, off: closeMiniForm }] = useBoolean(false);
   const [miniFormValue, setMiniFormValue] = useState<string>("");
   const [miniFormError, setMiniFormError] = useState<boolean>(false);
@@ -49,12 +56,22 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
       <Stack direction="column" sx={{ height: "100%" }}>
         <List disablePadding>
           <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <ListItemButton>
+            <ListItemButton component={Link} to="/">
               <ListItemIcon><House /></ListItemIcon>
               <ListItemText>CobbledBuilder</ListItemText>
             </ListItemButton>
           </ListItem>
         </List>
+        {menuHeaders && <List disablePadding>
+          {menuHeaders.map(({ icon, label, path }) =>
+            <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <ListItemButton component={Link} to={path}>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText>{label}</ListItemText>
+              </ListItemButton>
+            </ListItem>
+          )}
+        </List>}
         <List sx={{ flexGrow: 1 }} disablePadding>
           {menu?.map(({ label, path }) =>
             <ListItem disablePadding key={label}>

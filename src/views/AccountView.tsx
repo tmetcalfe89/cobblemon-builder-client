@@ -17,8 +17,12 @@ export default function AccountView() {
   }, [createAddon]);
 
   const menuItems = useMemo(() =>
-    addons?.map(({ id, name }) => ({ label: name, path: `/addons/${id}` })),
-    [addons])
+    addons?.map(({ id, name }) => ({
+      label: name,
+      path: `/addons/${id}`
+    })),
+    [addons]
+  )
 
   return <Layout
     menu={menuItems}
