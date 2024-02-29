@@ -1,16 +1,17 @@
-import { useParams } from "react-router-dom";
+import { Route, Routes, useParams } from "react-router-dom";
 import Layout, { MenuHeader } from "../components/Layout";
 import useAddon from "../hooks/useAddon";
 import { useMemo } from "react";
 import { Folder, Pets } from "@mui/icons-material";
 import useMonster from "../hooks/useMonster";
+import AnimationsView from "./AnimationsView";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "spawns", "species"];
 
 export default function MonsterView() {
   const { addonId = "-1", monsterId = "-1" } = useParams();
   const { addon } = useAddon(+addonId);
-  const { monster } = useMonster(+monsterId);
+  const { monster, animations, uploadAnimation } = useMonster(+monsterId);
 
   const menuHeaders = useMemo<MenuHeader[] | undefined>(() => (addon && monster) ? ([
     {
@@ -36,6 +37,8 @@ export default function MonsterView() {
     menuHeaders={menuHeaders}
     menu={menuItems}
   >
-    <></>
+    <Routes>
+      <Route path="/animations" element={<AnimationsView onUpload={uploadAnimation} animations={animations} />} />
+    </Routes>
   </Layout>
 }

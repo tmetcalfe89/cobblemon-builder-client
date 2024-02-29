@@ -5,6 +5,7 @@ import Monster from "../../types/Monster";
 import monsterSchema from "./schemas/monsters";
 import addonSchema from "./schemas/addons";
 import animationSchema from "./schemas/animations";
+import Animation from "../../types/Animation";
 
 const db = Database("CobbledBuilder", schemas);
 
@@ -22,6 +23,8 @@ const getAllMonstersForAddon = (addonId: number) =>
 const getMonsterById = monstersDb.getById;
 
 const createAnimation = animationsDb.create;
+const getAllAnimationsForMonster = (monsterId: number) =>
+  animationsDb.getByField("monsterId", monsterId);
 
 export {
   createAddon,
@@ -31,4 +34,5 @@ export {
   getAllMonstersForAddon,
   getMonsterById,
   createAnimation,
+  getAllAnimationsForMonster,
 };

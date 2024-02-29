@@ -15,6 +15,8 @@ export interface LayoutProps {
 export interface MenuItem {
   label: string;
   path: string;
+  icon?: React.ReactNode;
+  onIconClick?: () => void;
 }
 
 export interface MenuHeader {
@@ -64,7 +66,7 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
         </List>
         {menuHeaders && <List disablePadding>
           {menuHeaders.map(({ icon, label, path }) =>
-            <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }} key={label}>
               <ListItemLink to={path}>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText>{label}</ListItemText>
@@ -73,10 +75,11 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
           )}
         </List>}
         <List sx={{ flexGrow: 1, overflowY: "auto" }} disablePadding>
-          {menu?.map(({ label, path }) =>
+          {menu?.map(({ label, path, icon, onIconClick }) =>
             <ListItem disablePadding key={label}>
               <ListItemLink to={path}>
                 <ListItemText sx={{ textTransform: "capitalize" }}>{label}</ListItemText>
+                {icon && <ListItemIcon onClick={onIconClick}></ListItemIcon>}
               </ListItemLink>
             </ListItem>
           )}
@@ -109,7 +112,7 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
         </List>}
       </Stack>
     </Box >
-    <Box>
+    <Box p={2} flexGrow={1} overflow="auto">
       {children}
     </Box>
   </Stack >
