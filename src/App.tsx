@@ -9,7 +9,7 @@ import darkTheme from "./theme";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="cobblemon-builder-client">
       <ThemeProvider theme={darkTheme}>
         <CssBaseline />
         <Routes>
