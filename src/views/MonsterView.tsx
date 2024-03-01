@@ -5,10 +5,7 @@ import { useMemo } from "react";
 import { Folder, Pets } from "@mui/icons-material";
 import useMonster from "../hooks/useMonster";
 import FeatureView from "./FeatureView";
-import AnimationEntry from "../features/AnimationEntry";
-import ModelEntry from "../features/ModelEntry";
-import TextureEntry from "../features/TexturesView";
-import PoserEntry from "../features/PoserEntry";
+import FeatureEntry from "../components/FeatureEntry";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "spawns", "species"];
 
@@ -39,10 +36,10 @@ export default function MonsterView() {
 
   return <Routes>
     <Route index element={<Layout menuHeaders={menuHeaders} menu={menuItems} />} />
-    <Route path="/animations" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={animations} entryComponent={AnimationEntry} />} />
-    <Route path="/models" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={models} entryComponent={ModelEntry} />} />
-    <Route path="/posers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={posers} entryComponent={PoserEntry} />} />
-    <Route path="/textures" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={textures} entryComponent={TextureEntry} imageView />} />
+    <Route path="/animations" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={animations} entryComponent={FeatureEntry} />} />
+    <Route path="/models" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={models} entryComponent={FeatureEntry} />} />
+    <Route path="/posers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={posers} entryComponent={FeatureEntry} />} />
+    <Route path="/textures" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={textures} entryComponent={FeatureEntry} imageView />} />
     <Route path="*" element={<Layout menuHeaders={menuHeaders} menu={menuItems} />} />
   </Routes>
 }

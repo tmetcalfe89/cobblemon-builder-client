@@ -41,7 +41,7 @@ export const uploadModel = async (file: File, monsterId: number) => {
   const model = await uploadJson<ModelFile>(file);
   const addedModel = await createModel({
     model,
-    modelName: model["minecraft:geometry"][0].description.identifier,
+    name: model["minecraft:geometry"][0].description.identifier,
     monsterId,
   });
   return addedModel;
@@ -54,7 +54,7 @@ export const uploadAnimations = async (file: File, monsterId: number) => {
   ).map(
     ([animationFullName, animation]): Animation => ({
       animation,
-      animationName: animationFullName.split(".").pop() || "missing",
+      name: animationFullName.split(".").pop() || "missing",
       monsterId,
     })
   );
@@ -69,7 +69,7 @@ export const uploadTexture = async (file: File, monsterId: number) => {
   const addedTexture = await createTexture({
     monsterId,
     texture,
-    textureName: file.name,
+    name: file.name,
   });
   return addedTexture;
 };
@@ -83,7 +83,7 @@ export const uploadPoser = async (file: File, monsterId: number) => {
   const addedPoser = await createPoser({
     monsterId,
     poser,
-    poserName: file.name,
+    name: file.name,
   });
   return addedPoser;
 };

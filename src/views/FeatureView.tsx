@@ -2,22 +2,19 @@ import { ImageList, List, Stack } from "@mui/material";
 import { useCallback } from "react";
 import FileInput from "../components/FileInput";
 import Layout, { MenuHeader, MenuItem } from "../components/Layout";
+import FeatureAccess from "../types/FeatureAccess";
+import { FeatureEntryProps } from "../components/FeatureEntry";
 import Feature from "../types/Feature";
 
-export interface EntryComponentProps<T> {
-  entry: T;
-  onDelete: (id: number) => void;
-}
-
-export interface FeatureViewProps<T> {
-  entryComponent: (props: EntryComponentProps<T & { id: number }>) => JSX.Element;
+export interface FeatureViewProps<T extends Feature> {
+  entryComponent: (props: FeatureEntryProps<T>) => JSX.Element;
   imageView?: boolean;
   menuHeaders?: MenuHeader[];
   menuItems?: MenuItem[];
-  feature: Feature<T>
+  feature: FeatureAccess<T>
 }
 
-export default function FeatureView<T>({
+export default function FeatureView<T extends Feature>({
   entryComponent: EntryComponent,
   imageView,
   feature,
@@ -41,11 +38,11 @@ export default function FeatureView<T>({
         <FileInput onChange={handleFileInputChange} multiple={imageView} filter={imageView ? "image/*" : "application/json"} />
         {imageView ? <ImageList cols={5}>
           {(feature.list || []).map((entry) =>
-            <EntryComponent key={entry.id} entry={entry} onDelete={feature.deleteEntry} />
+            <EntryComponent key={entry.id} entry={entry} onDelete={feature.deleteEntry} onRename={feature.rename} />
           )}
         </ImageList> : <List>
           {feature.list?.map((entry) => (
-            <EntryComponent key={entry.id} entry={entry} onDelete={feature.deleteEntry} />
+            <EntryComponent key={entry.id} entry={entry} onDelete={feature.deleteEntry} onRename={feature.rename} />
           ))}
         </List>}
       </Stack>

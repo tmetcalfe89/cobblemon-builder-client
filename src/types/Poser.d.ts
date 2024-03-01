@@ -1,7 +1,8 @@
+import Feature from "./Feature";
 import PoserFile from "./PoserFile";
 
-export default interface Poser {
+export default interface Poser extends Feature {
   monsterId: number;
-  poserName: string;
+  name: string;
   poser: PoserFile;
 }

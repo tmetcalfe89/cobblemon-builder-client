@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 import WithId from "../types/WithId";
+import FeatureAccess from "../types/FeatureAccess";
 import Feature from "../types/Feature";
 
 export interface OptionalFeatureParams<T> {
   createFromName?: (name: string) => Promise<WithId<T>>;
 }
 
-const useFeature = <T extends object>(
+const useFeature = <T extends Feature>(
   id: number,
   upload: (
     file: File,
@@ -14,8 +15,9 @@ const useFeature = <T extends object>(
   ) => Promise<(T & { id: number }) | WithId<T>[]>,
   getAllForId: (id: number) => Promise<WithId<T>[]>,
   deleteOne: (id: number) => Promise<void>,
+  rename: (id: number, name: string) => Promise<WithId<T>>,
   optionalParams: OptionalFeatureParams<T> = {}
-): Feature<T> => {
+): FeatureAccess<T> => {
   const { createFromName } = optionalParams;
   const [list, setList] = useState<WithId<T>[] | null>(null);
 
@@ -74,11 +76,25 @@ const useFeature = <T extends object>(
     [createFromName]
   );
 
+  const handleRename = useCallback(
+    async (id: number, name: string) => {
+      const updatedEntry = await rename(id, name);
+      setList(
+        (p) =>
+          p?.map((existing) =>
+            existing.id === id ? updatedEntry : existing
+          ) || null
+      );
+    },
+    [rename]
+  );
+
   return {
     list,
     createFromFile: handleCreateFromFile,
     deleteEntry,
     createFromName: createFromName ? handleCreateFromName : undefined,
+    rename: handleRename,
   };
 };
 

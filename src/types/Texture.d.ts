@@ -1,5 +1,7 @@
-export default interface Texture {
+import Feature from "./Feature";
+
+export default interface Texture extends Feature {
   monsterId: number;
-  textureName: string;
+  name: string;
   texture: string;
 }

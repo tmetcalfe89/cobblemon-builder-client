@@ -14,6 +14,11 @@ import Poser from "../../types/Poser";
 import poserSchema from "./schemas/posers";
 import Model from "../../types/Model";
 
+const rename =
+  <T extends object>(store: DatabaseStoreType<T>) =>
+  async (id: number, name: string) =>
+    store.update(id, { ...(await store.getById(id)), name });
+
 const db = Database("CobbledBuilder", schemas);
 
 const addonsDb = db.getStore<Addon>(addonSchema.name);
@@ -58,21 +63,25 @@ const createAnimation = animationsDb.create;
 const getAllAnimationsForMonster = (monsterId: number) =>
   animationsDb.getByField("monsterId", monsterId);
 const deleteAnimation = animationsDb.delete;
+const renameAnimation = rename(animationsDb);
 
 const createModel = modelsDb.create;
 const getAllModelsForMonster = (monsterId: number) =>
   modelsDb.getByField("monsterId", monsterId);
 const deleteModel = modelsDb.delete;
+const renameModel = rename(modelsDb);
 
 const createTexture = texturesDb.create;
 const getAllTexturesForMonster = (monsterId: number) =>
   texturesDb.getByField("monsterId", monsterId);
 const deleteTexture = texturesDb.delete;
+const renameTexture = rename(texturesDb);
 
 const createPoser = posersDb.create;
 const getAllPosersForMonster = (monsterId: number) =>
   posersDb.getByField("monsterId", monsterId);
 const deletePoser = posersDb.delete;
+const renamePoser = rename(posersDb);
 
 export {
   createAddon,
@@ -86,13 +95,17 @@ export {
   createAnimation,
   getAllAnimationsForMonster,
   deleteAnimation,
+  renameAnimation,
   createModel,
   getAllModelsForMonster,
   deleteModel,
+  renameModel,
   createTexture,
   getAllTexturesForMonster,
   deleteTexture,
+  renameTexture,
   createPoser,
   getAllPosersForMonster,
   deletePoser,
+  renamePoser,
 };

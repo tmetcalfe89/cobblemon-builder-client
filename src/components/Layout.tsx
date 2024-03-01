@@ -54,7 +54,7 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
   }, [miniFormOpen]);
 
   return <Stack direction="row" sx={{ height: "100vh" }}>
-    <Box sx={{ width: 300, borderRight: 1, borderColor: "divider" }}>
+    <Box sx={{ width: 300, borderRight: 1, borderColor: "divider", flexShrink: 0 }}>
       <Stack direction="column" sx={{ height: "100%" }}>
         <List disablePadding>
           <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }}>
