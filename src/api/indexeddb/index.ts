@@ -30,14 +30,17 @@ const getMonsterById = monstersDb.getById;
 const createAnimation = animationsDb.create;
 const getAllAnimationsForMonster = (monsterId: number) =>
   animationsDb.getByField("monsterId", monsterId);
+const deleteAnimation = animationsDb.delete;
 
 const createModel = modelsDb.create;
 const getAllModelsForMonster = (monsterId: number) =>
   modelsDb.getByField("monsterId", monsterId);
+const deleteModel = modelsDb.delete;
 
 const createTexture = texturesDb.create;
 const getAllTexturesForMonster = (monsterId: number) =>
   texturesDb.getByField("monsterId", monsterId);
+const deleteTexture = texturesDb.delete;
 
 export {
   createAddon,
@@ -48,8 +51,11 @@ export {
   getMonsterById,
   createAnimation,
   getAllAnimationsForMonster,
+  deleteAnimation,
   createModel,
   getAllModelsForMonster,
+  deleteModel,
   createTexture,
   getAllTexturesForMonster,
+  deleteTexture,
 };

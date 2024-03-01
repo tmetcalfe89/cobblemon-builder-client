@@ -6,7 +6,8 @@ export default function useFeature<T extends object>(
     file: File,
     id: number
   ) => Promise<(T & { id: number }) | (T & { id: number })[]>,
-  getAllForId: (id: number) => Promise<(T & { id: number })[]>
+  getAllForId: (id: number) => Promise<(T & { id: number })[]>,
+  deleteOne: (id: number) => Promise<void>
 ) {
   const [list, setList] = useState<(T & { id: number })[] | null>(null);
 
@@ -34,5 +35,13 @@ export default function useFeature<T extends object>(
     [id, upload]
   );
 
-  return { list, createNew };
+  const deleteEntry = useCallback(
+    async (id: number) => {
+      await deleteOne(id);
+      setList((p) => p?.filter((entry) => entry.id !== id) || null);
+    },
+    [deleteOne]
+  );
+
+  return { list, createNew, deleteEntry };
 }

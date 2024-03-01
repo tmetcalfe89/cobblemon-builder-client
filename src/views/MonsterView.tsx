@@ -3,10 +3,11 @@ import Layout, { MenuHeader } from "../components/Layout";
 import useAddon from "../hooks/useAddon";
 import { useMemo } from "react";
 import { Folder, Pets } from "@mui/icons-material";
-import AnimationsView from "./AnimationsView";
-import ModelsView from "./ModelsView";
+import AnimationEntry from "../features/AnimationEntry";
 import useMonster from "../hooks/useMonster";
-import TexturesView from "./TexturesView";
+import FeatureView from "./FeatureView";
+import ModelEntry from "../features/ModelEntry";
+import TextureEntry from "../features/TexturesView";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "spawns", "species"];
 
@@ -40,9 +41,9 @@ export default function MonsterView() {
     menu={menuItems}
   >
     <Routes>
-      <Route path="/animations" element={<AnimationsView onUpload={animations.createNew} animations={animations.list} />} />
-      <Route path="/models" element={<ModelsView onUpload={models.createNew} models={models.list} />} />
-      <Route path="/textures" element={<TexturesView onUpload={textures.createNew} textures={textures.list} />} />
+      <Route path="/animations" element={<FeatureView onUpload={animations.createNew} onDelete={animations.deleteEntry} list={animations.list} entryComponent={AnimationEntry} />} />
+      <Route path="/models" element={<FeatureView onUpload={models.createNew} onDelete={models.deleteEntry} list={models.list} entryComponent={ModelEntry} />} />
+      <Route path="/textures" element={<FeatureView onUpload={textures.createNew} onDelete={textures.deleteEntry} list={textures.list} entryComponent={TextureEntry} imageView />} />
     </Routes>
   </Layout>
 }

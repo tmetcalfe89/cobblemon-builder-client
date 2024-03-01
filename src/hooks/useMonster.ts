@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import {
+  deleteAnimation,
+  deleteModel,
+  deleteTexture,
   getAllAnimationsForMonster,
   getAllModelsForMonster,
   getAllTexturesForMonster,
@@ -28,16 +31,23 @@ export default function useMonster(monsterId: number) {
     };
   }, [monsterId]);
 
-  const models = useFeature(monsterId, uploadModel, getAllModelsForMonster);
+  const models = useFeature(
+    monsterId,
+    uploadModel,
+    getAllModelsForMonster,
+    deleteModel
+  );
   const animations = useFeature(
     monsterId,
     uploadAnimations,
-    getAllAnimationsForMonster
+    getAllAnimationsForMonster,
+    deleteAnimation
   );
   const textures = useFeature(
     monsterId,
     uploadTexture,
-    getAllTexturesForMonster
+    getAllTexturesForMonster,
+    deleteTexture
   );
 
   return { monster, animations, models, textures };
