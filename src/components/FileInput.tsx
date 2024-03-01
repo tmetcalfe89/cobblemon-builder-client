@@ -1,11 +1,13 @@
 import { CloudUpload } from "@mui/icons-material";
-import { Button, Input } from "@mui/material";
+import { Button } from "@mui/material";
 
 export interface FileInputProps {
   onChange?: React.ChangeEventHandler<HTMLInputElement>,
+  multiple?: boolean,
+  filter?: string | string[],
 }
 
-export default function FileInput({ onChange }: FileInputProps) {
+export default function FileInput({ onChange, multiple, filter }: FileInputProps) {
   return <Button
     component="label"
     role={undefined}
@@ -14,6 +16,6 @@ export default function FileInput({ onChange }: FileInputProps) {
     startIcon={<CloudUpload />}
   >
     Upload file
-    <Input type="file" sx={{ display: "none" }} onChange={onChange} />
+    <input type="file" style={{ display: "none" }} onChange={onChange} multiple={multiple} accept={Array.isArray(filter) ? filter.join(",") : filter} />
   </Button>
 }

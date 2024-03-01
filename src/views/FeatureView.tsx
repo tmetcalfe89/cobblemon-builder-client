@@ -8,7 +8,7 @@ export interface EntryComponentProps<T> {
 }
 
 export interface FeatureViewProps<T> {
-  onUpload: (file: File) => void;
+  onUpload: (file: File) => Promise<void>;
   onDelete: (id: number) => void;
   list: (T & { id: number })[] | null;
   entryComponent: (props: EntryComponentProps<T & { id: number }>) => JSX.Element;
@@ -23,9 +23,11 @@ export default function FeatureView<T>({
   imageView
 }: FeatureViewProps<T>) {
   const handleFileInputChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(
-    (event) => {
+    async (event) => {
       if (event.target.files) {
-        onUpload(event.target.files[0]);
+        for (const file of event.target.files) {
+          await onUpload(file);
+        }
       }
     },
     [onUpload]
@@ -33,7 +35,7 @@ export default function FeatureView<T>({
 
   return (
     <Stack>
-      <FileInput onChange={handleFileInputChange} />
+      <FileInput onChange={handleFileInputChange} multiple={imageView} filter={imageView ? "image/*" : "application/json"} />
       {imageView ? <ImageList cols={5}>
         {(list || []).map((entry) =>
           <EntryComponent key={entry.id} entry={entry} onDelete={onDelete} />
