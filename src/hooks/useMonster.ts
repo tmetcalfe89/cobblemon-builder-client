@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import {
   getAllAnimationsForMonster,
   getAllModelsForMonster,
+  getAllTexturesForMonster,
   getMonsterById,
 } from "../api/indexeddb";
 import Monster from "../types/Monster";
-import { uploadAnimations, uploadModel } from "../util/upload";
+import { uploadAnimations, uploadModel, uploadTexture } from "../util/upload";
 import useFeature from "./useFeature";
 
 export default function useMonster(monsterId: number) {
@@ -33,6 +34,11 @@ export default function useMonster(monsterId: number) {
     uploadAnimations,
     getAllAnimationsForMonster
   );
+  const textures = useFeature(
+    monsterId,
+    uploadTexture,
+    getAllTexturesForMonster
+  );
 
-  return { monster, animations, models };
+  return { monster, animations, models, textures };
 }

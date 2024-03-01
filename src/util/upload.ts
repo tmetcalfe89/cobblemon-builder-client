@@ -1,4 +1,4 @@
-import { createAnimation, createModel } from "../api/indexeddb";
+import { createAnimation, createModel, createTexture } from "../api/indexeddb";
 import Animation from "../types/Animation";
 import AnimationFile from "../types/AnimationFile";
 import ModelFile from "../types/ModelFile";
@@ -56,4 +56,14 @@ export const uploadAnimations = async (file: File, monsterId: number) => {
     remappedAnimations.map((animation) => createAnimation(animation))
   );
   return addedAnimations;
+};
+
+export const uploadTexture = async (file: File, monsterId: number) => {
+  const texture = await uploadImage(file);
+  const addedTexture = await createTexture({
+    monsterId,
+    texture,
+    textureName: file.name,
+  });
+  return addedTexture;
 };

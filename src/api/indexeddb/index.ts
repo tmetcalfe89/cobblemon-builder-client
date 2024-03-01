@@ -7,6 +7,8 @@ import addonSchema from "./schemas/addons";
 import animationSchema from "./schemas/animations";
 import Animation from "../../types/Animation";
 import modelSchema from "./schemas/models";
+import Texture from "../../types/Texture";
+import textureSchema from "./schemas/textures";
 
 const db = Database("CobbledBuilder", schemas);
 
@@ -14,6 +16,7 @@ const addonsDb = db.getStore<Addon>(addonSchema.name);
 const monstersDb = db.getStore<Monster>(monsterSchema.name);
 const animationsDb = db.getStore<Animation>(animationSchema.name);
 const modelsDb = db.getStore<Model>(modelSchema.name);
+const texturesDb = db.getStore<Texture>(textureSchema.name);
 
 const createAddon = addonsDb.create;
 const getAllAddons = addonsDb.getAll;
@@ -32,6 +35,10 @@ const createModel = modelsDb.create;
 const getAllModelsForMonster = (monsterId: number) =>
   modelsDb.getByField("monsterId", monsterId);
 
+const createTexture = texturesDb.create;
+const getAllTexturesForMonster = (monsterId: number) =>
+  texturesDb.getByField("monsterId", monsterId);
+
 export {
   createAddon,
   getAllAddons,
@@ -43,4 +50,6 @@ export {
   getAllAnimationsForMonster,
   createModel,
   getAllModelsForMonster,
+  createTexture,
+  getAllTexturesForMonster,
 };

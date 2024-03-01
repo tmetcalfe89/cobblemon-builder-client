@@ -18,7 +18,7 @@ export default function ModelsView({ onUpload, models }: ModelsViewProps) {
     <Stack>
       <FileInput onChange={handleFileInputChange} />
       <List>
-        {models?.map((model) => <AnimationEntry model={model} key={model.id} />)}
+        {models?.map((model) => <ModelEntry model={model} key={model.id} />)}
       </List>
     </Stack>
   );
@@ -27,8 +27,8 @@ export default function ModelsView({ onUpload, models }: ModelsViewProps) {
 interface ModelEntryProps {
   model: Model;
 }
-function AnimationEntry({ model }: ModelEntryProps) {
 
+function ModelEntry({ model }: ModelEntryProps) {
   return <ListItem>
     <ListItemButton>
       <Typography variant="button">{model.modelName}</Typography>
