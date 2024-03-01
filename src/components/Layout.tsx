@@ -79,8 +79,10 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
             <ListItem disablePadding key={label}>
               <ListItemLink to={path}>
                 <ListItemText sx={{ textTransform: "capitalize" }}>{label}</ListItemText>
-                {icon && <ListItemIcon onClick={onIconClick}></ListItemIcon>}
               </ListItemLink>
+              {icon && <ListItemButton sx={{ flexGrow: 0, alignSelf: "stretch" }}>
+                <ListItemIcon onClick={onIconClick} sx={{ minWidth: "unset" }}>{icon}</ListItemIcon>
+              </ListItemButton>}
             </ListItem>
           )}
         </List>

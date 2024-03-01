@@ -1,19 +1,21 @@
 import { useParams } from "react-router-dom";
-import Layout, { MenuHeader } from "../components/Layout";
+import Layout, { MenuHeader, MenuItem } from "../components/Layout";
 import useAddon from "../hooks/useAddon";
 import { useCallback, useMemo } from "react";
-import { Folder } from "@mui/icons-material";
+import { Delete, Folder } from "@mui/icons-material";
 
 export default function AddonView() {
   const { addonId = "-1" } = useParams();
-  const { addon, monsters, createMonster } = useAddon(+addonId)
+  const { addon, monsters, createMonster, deleteMonster } = useAddon(+addonId)
 
-  const menuItems = useMemo(() =>
+  const menuItems = useMemo<MenuItem[] | undefined>((): MenuItem[] | undefined =>
     monsters?.map(({ id, addonId, name }) => ({
       label: name,
-      path: `/addons/${addonId}/monsters/${id}`
+      path: `/addons/${addonId}/monsters/${id}`,
+      icon: <Delete />,
+      onIconClick: () => deleteMonster(id)
     })),
-    [monsters]
+    [deleteMonster, monsters]
   );
 
   const menuHeaders = useMemo<MenuHeader[] | undefined>(() => addon ? ([{
