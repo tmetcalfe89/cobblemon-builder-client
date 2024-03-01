@@ -1,6 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import Addon from "../types/Addon";
-import { createAddon as idbCreateAddon, getAllAddons } from "../api/indexeddb";
+import {
+  createAddon as idbCreateAddon,
+  getAllAddons,
+  deleteAddon as idbDeleteAddon,
+} from "../api/indexeddb";
 
 export default function useAccount() {
   const [addons, setAddons] = useState<(Addon & { id: number })[] | null>(null);
@@ -24,5 +28,10 @@ export default function useAccount() {
     setAddons((p) => p?.concat(newAddon) || null);
   }, []);
 
-  return { addons, createAddon };
+  const deleteAddon = useCallback(async (addonId: number) => {
+    await idbDeleteAddon(addonId);
+    setAddons((p) => p?.filter((e) => e.id !== addonId) || null);
+  }, []);
+
+  return { addons, createAddon, deleteAddon };
 }

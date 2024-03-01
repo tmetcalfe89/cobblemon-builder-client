@@ -1,9 +1,10 @@
-import Layout from "../components/Layout";
+import { Delete } from "@mui/icons-material";
+import Layout, { MenuItem } from "../components/Layout";
 import useAccount from "../hooks/useAccount";
 import { useCallback, useMemo } from "react";
 
 export default function AccountView() {
-  const { addons, createAddon } = useAccount();
+  const { addons, createAddon, deleteAddon } = useAccount();
 
   const handleCreateAddon = useCallback(async (name: string) => {
     if (!name) return false;
@@ -16,12 +17,14 @@ export default function AccountView() {
     }
   }, [createAddon]);
 
-  const menuItems = useMemo(() =>
+  const menuItems = useMemo<MenuItem[] | undefined>((): MenuItem[] | undefined =>
     addons?.map(({ id, name }) => ({
       label: name,
-      path: `/addons/${id}`
+      path: `/addons/${id}`,
+      icon: <Delete />,
+      onIconClick: () => deleteAddon(id),
     })),
-    [addons]
+    [addons, deleteAddon]
   )
 
   return <Layout

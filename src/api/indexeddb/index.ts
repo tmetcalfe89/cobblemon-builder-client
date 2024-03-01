@@ -22,6 +22,13 @@ const texturesDb = db.getStore<Texture>(textureSchema.name);
 const createAddon = addonsDb.create;
 const getAllAddons = addonsDb.getAll;
 const getAddonById = addonsDb.getById;
+const deleteAddon = async (addonId: number) => {
+  await addonsDb.delete(addonId);
+  const monsters = await getAllMonstersForAddon(addonId);
+  for (const monster of monsters) {
+    await deleteMonster(monster.id);
+  }
+};
 
 const createMonster = monstersDb.create;
 const getAllMonstersForAddon = (addonId: number) =>
@@ -62,6 +69,7 @@ export {
   createAddon,
   getAllAddons,
   getAddonById,
+  deleteAddon,
   createMonster,
   getAllMonstersForAddon,
   deleteMonster,
