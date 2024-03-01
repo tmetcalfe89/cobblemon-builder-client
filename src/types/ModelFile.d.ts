@@ -3,7 +3,7 @@ export default interface ModelFile {
   "minecraft:geometry": ModelGeometry[];
 }
 
-interface ModelGeometry {
+export interface ModelGeometry {
   description: {
     identifier: string;
     texture_width: number;
@@ -12,7 +12,7 @@ interface ModelGeometry {
   bones: Bone[];
 }
 
-interface Bone {
+export interface Bone {
   name: string;
   parent?: string;
   pivot: [number, number, number];
@@ -20,7 +20,7 @@ interface Bone {
   cubes?: Cube[];
 }
 
-interface Cube {
+export interface Cube {
   origin: [number, number, number];
   size: [number, number, number];
   uv:

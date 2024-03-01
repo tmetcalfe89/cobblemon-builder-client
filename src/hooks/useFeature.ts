@@ -1,15 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import WithId from "../types/WithId";
+import Feature from "../types/Feature";
 
 export interface OptionalFeatureParams<T> {
   createFromName?: (name: string) => Promise<WithId<T>>;
-}
-
-export interface Feature<T> {
-  list: WithId<T>[] | null;
-  createFromFile: (file: File) => Promise<boolean>;
-  deleteEntry: (id: number) => Promise<void>;
-  createFromName?: (name: string) => Promise<boolean>;
 }
 
 const useFeature = <T extends object>(

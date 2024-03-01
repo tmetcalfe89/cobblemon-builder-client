@@ -1,7 +1,7 @@
 import { ListItemButton } from "@mui/material"
 import { NavLink } from "react-router-dom"
 
-interface ListItemLinkProps {
+export interface ListItemLinkProps {
   children?: React.ReactNode
   to: string
 }

@@ -3,7 +3,7 @@ import { ListItem, ListItemButton, ListItemIcon, Typography } from "@mui/materia
 import Poser from "../types/Poser";
 import WithId from "../types/WithId";
 
-interface PoserEntryProps {
+export interface PoserEntryProps {
   entry: WithId<Poser>;
   onDelete: (id: number) => void;
 }

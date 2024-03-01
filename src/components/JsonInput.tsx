@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 
-interface JsonInputProps {
+export interface JsonInputProps {
   value: object;
   onChange: (newValue: string) => void;
 }

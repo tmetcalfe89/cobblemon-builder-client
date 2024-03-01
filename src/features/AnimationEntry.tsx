@@ -2,7 +2,7 @@ import Animation from "../types/Animation";
 import { ListItem, ListItemButton, ListItemIcon, Typography } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 
-interface AnimationEntryProps {
+export interface AnimationEntryProps {
   entry: Animation & { id: number };
   onDelete: (id: number) => void;
 }

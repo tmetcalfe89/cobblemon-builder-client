@@ -1,7 +1,7 @@
 import { Delete } from "@mui/icons-material";
 import { ListItem, ListItemButton, ListItemIcon, Typography } from "@mui/material";
 
-interface ModelEntryProps {
+export interface ModelEntryProps {
   entry: Model & { id: number };
   onDelete: (id: number) => void;
 }

@@ -2,7 +2,7 @@ import { Delete } from "@mui/icons-material";
 import Texture from "../types/Texture";
 import { ImageListItem, ImageListItemBar } from "@mui/material";
 
-interface TextureEntryProps {
+export interface TextureEntryProps {
   entry: Texture & { id: number };
   onDelete: (id: number) => void;
 }

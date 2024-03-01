@@ -2,7 +2,7 @@ import { ImageList, List, Stack } from "@mui/material";
 import { useCallback } from "react";
 import FileInput from "../components/FileInput";
 import Layout, { MenuHeader, MenuItem } from "../components/Layout";
-import { Feature } from "../hooks/useFeature";
+import Feature from "../types/Feature";
 
 export interface EntryComponentProps<T> {
   entry: T;
@@ -10,14 +10,10 @@ export interface EntryComponentProps<T> {
 }
 
 export interface FeatureViewProps<T> {
-  // onUpload: (file: File) => Promise<void>;
-  // onDelete: (id: number) => void;
-  // list: (T & { id: number })[] | null;
   entryComponent: (props: EntryComponentProps<T & { id: number }>) => JSX.Element;
   imageView?: boolean;
   menuHeaders?: MenuHeader[];
   menuItems?: MenuItem[];
-  // onMiniFormSubmit?: (name: string) => Promise<boolean>;
   feature: Feature<T>
 }
 
