@@ -1,7 +1,13 @@
-import { createAnimation, createModel, createTexture } from "../api/indexeddb";
+import {
+  createAnimation,
+  createModel,
+  createPoser,
+  createTexture,
+} from "../api/indexeddb";
 import Animation from "../types/Animation";
 import AnimationFile from "../types/AnimationFile";
 import ModelFile from "../types/ModelFile";
+import PoserFile from "../types/PoserFile";
 
 export const uploadJson = async <T extends object>(file: File): Promise<T> => {
   const abUploaded = await uploadFile(file);
@@ -66,4 +72,18 @@ export const uploadTexture = async (file: File, monsterId: number) => {
     textureName: file.name,
   });
   return addedTexture;
+};
+
+export const uploadPoser = async (file: File, monsterId: number) => {
+  const rawPoser = await uploadJson<PoserFile>(file);
+  const poser: PoserFile = {
+    ...rawPoser,
+    poses: Object.values(rawPoser),
+  };
+  const addedPoser = await createPoser({
+    monsterId,
+    poser,
+    poserName: file.name,
+  });
+  return addedPoser;
 };

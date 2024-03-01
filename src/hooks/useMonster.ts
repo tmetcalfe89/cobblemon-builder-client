@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
 import {
+  createPoser,
   deleteAnimation,
   deleteModel,
+  deletePoser,
   deleteTexture,
   getAllAnimationsForMonster,
   getAllModelsForMonster,
+  getAllPosersForMonster,
   getAllTexturesForMonster,
   getMonsterById,
 } from "../api/indexeddb";
 import Monster from "../types/Monster";
-import { uploadAnimations, uploadModel, uploadTexture } from "../util/upload";
+import {
+  uploadAnimations,
+  uploadModel,
+  uploadPoser,
+  uploadTexture,
+} from "../util/upload";
 import useFeature from "./useFeature";
+import defaultPoser from "../defaults/PoserFile";
 
 export default function useMonster(monsterId: number) {
   const [monster, setMonster] = useState<(Monster & { id: number }) | null>(
@@ -49,6 +58,26 @@ export default function useMonster(monsterId: number) {
     getAllTexturesForMonster,
     deleteTexture
   );
+  const posers = useFeature(
+    monsterId,
+    uploadPoser,
+    getAllPosersForMonster,
+    deletePoser,
+    {
+      createFromName: (poserName) =>
+        createPoser({
+          monsterId,
+          poserName,
+          poser: defaultPoser,
+        }),
+    }
+  );
 
-  return { monster, animations, models, textures };
+  return {
+    monster,
+    animations,
+    models,
+    textures,
+    posers,
+  };
 }

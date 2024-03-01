@@ -10,6 +10,8 @@ import modelSchema from "./schemas/models";
 import Texture from "../../types/Texture";
 import textureSchema from "./schemas/textures";
 import { DatabaseStoreType } from "the-promised-indexeddb/types/types";
+import Poser from "../../types/Poser";
+import poserSchema from "./schemas/posers";
 
 const db = Database("CobbledBuilder", schemas);
 
@@ -18,6 +20,7 @@ const monstersDb = db.getStore<Monster>(monsterSchema.name);
 const animationsDb = db.getStore<Animation>(animationSchema.name);
 const modelsDb = db.getStore<Model>(modelSchema.name);
 const texturesDb = db.getStore<Texture>(textureSchema.name);
+const posersDb = db.getStore<Poser>(poserSchema.name);
 
 const createAddon = addonsDb.create;
 const getAllAddons = addonsDb.getAll;
@@ -65,6 +68,11 @@ const getAllTexturesForMonster = (monsterId: number) =>
   texturesDb.getByField("monsterId", monsterId);
 const deleteTexture = texturesDb.delete;
 
+const createPoser = posersDb.create;
+const getAllPosersForMonster = (monsterId: number) =>
+  posersDb.getByField("monsterId", monsterId);
+const deletePoser = posersDb.delete;
+
 export {
   createAddon,
   getAllAddons,
@@ -83,4 +91,7 @@ export {
   createTexture,
   getAllTexturesForMonster,
   deleteTexture,
+  createPoser,
+  getAllPosersForMonster,
+  deletePoser,
 };
