@@ -1,5 +1,6 @@
 import { Delete } from "@mui/icons-material";
 import { ListItem, ListItemButton, ListItemIcon, Typography } from "@mui/material";
+import Model from "../types/Model";
 
 export interface ModelEntryProps {
   entry: Model & { id: number };

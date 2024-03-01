@@ -12,6 +12,7 @@ import textureSchema from "./schemas/textures";
 import { DatabaseStoreType } from "the-promised-indexeddb/types/types";
 import Poser from "../../types/Poser";
 import poserSchema from "./schemas/posers";
+import Model from "../../types/Model";
 
 const db = Database("CobbledBuilder", schemas);
 
