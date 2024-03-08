@@ -4,6 +4,7 @@ import useBoolean from "../hooks/useBoolean";
 import { useCallback, useState } from "react";
 import WithId from "../types/WithId";
 import Feature from "../types/Feature";
+import ListItemLink from "./ListItemLink";
 
 export interface FeatureEntryProps<T extends Feature> {
   entry: WithId<T>;
@@ -27,9 +28,9 @@ const FeatureEntry = <T extends Feature>({ entry, onDelete, onRename }: FeatureE
         fullWidth
         value={editingNameValue}
         onChange={(e) => setEditingNameValue(e.target.value)} /> :
-      <ListItemButton>
+      <ListItemLink to={`${entry.id}`}>
         <Typography variant="button">{entry.name}</Typography>
-      </ListItemButton>}
+      </ListItemLink>}
     <ListItemButton sx={{ flexGrow: 0 }} onClick={editingName ? handleEditName : showNameEditor}>
       <ListItemIcon sx={{ minWidth: "unset" }}>
         {editingName ? <Save /> : <Edit />}

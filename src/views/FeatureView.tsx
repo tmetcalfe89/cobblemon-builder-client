@@ -11,7 +11,7 @@ export interface FeatureViewProps<T extends Feature> {
   imageView?: boolean;
   menuHeaders?: MenuHeader[];
   menuItems?: MenuItem[];
-  feature: FeatureAccess<T>
+  feature: FeatureAccess<T>;
 }
 
 export default function FeatureView<T extends Feature>({

@@ -7,4 +7,5 @@ export default interface FeatureAccess<T extends Feature> {
   deleteEntry: (id: number) => Promise<void>;
   createFromName?: (name: string) => Promise<boolean>;
   rename: (id: number, name: string) => Promise<void>;
+  update: (id: number, data: T) => Promise<void>;
 }

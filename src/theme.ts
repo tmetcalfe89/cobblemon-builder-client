@@ -18,6 +18,13 @@ const darkTheme = createTheme({
         },
       },
     },
+    MuiTypography: {
+      styleOverrides: {
+        h1: {
+          fontSize: "2.5rem",
+        },
+      },
+    },
   },
 });
 

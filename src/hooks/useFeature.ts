@@ -16,6 +16,7 @@ const useFeature = <T extends Feature>(
   getAllForId: (id: number) => Promise<WithId<T>[]>,
   deleteOne: (id: number) => Promise<void>,
   rename: (id: number, name: string) => Promise<WithId<T>>,
+  update: (id: number, data: T) => Promise<WithId<T>>,
   optionalParams: OptionalFeatureParams<T> = {}
 ): FeatureAccess<T> => {
   const { createFromName } = optionalParams;
@@ -89,12 +90,26 @@ const useFeature = <T extends Feature>(
     [rename]
   );
 
+  const handleUpdate = useCallback(
+    async (id: number, data: T) => {
+      const updatedEntry = await update(id, data);
+      setList(
+        (p) =>
+          p?.map((existing) =>
+            existing.id === id ? updatedEntry : existing
+          ) || null
+      );
+    },
+    [update]
+  );
+
   return {
     list,
     createFromFile: handleCreateFromFile,
     deleteEntry,
     createFromName: createFromName ? handleCreateFromName : undefined,
     rename: handleRename,
+    update: handleUpdate,
   };
 };
 

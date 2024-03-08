@@ -13,9 +13,10 @@ import { DatabaseStoreType } from "the-promised-indexeddb/types/types";
 import Poser from "../../types/Poser";
 import poserSchema from "./schemas/posers";
 import Model from "../../types/Model";
+import Feature from "../../types/Feature";
 
 const rename =
-  <T extends object>(store: DatabaseStoreType<T>) =>
+  <T extends Feature>(store: DatabaseStoreType<T>) =>
   async (id: number, name: string) =>
     store.update(id, { ...(await store.getById(id)), name });
 
@@ -45,8 +46,9 @@ const getAllMonstersForAddon = (addonId: number) =>
 const getMonsterById = monstersDb.getById;
 const deleteMonster = async (monsterId: number) => {
   await monstersDb.delete(monsterId);
+  // Need to fix this. The things stored in the... stores are Features and it won't let me `DatabaseStoreType<Feature>` :thinking:
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const monsterFeatureStores: DatabaseStoreType<any & { id: number }>[] = [
+  const monsterFeatureStores: DatabaseStoreType<any>[] = [
     animationsDb,
     modelsDb,
     texturesDb,
@@ -64,24 +66,28 @@ const getAllAnimationsForMonster = (monsterId: number) =>
   animationsDb.getByField("monsterId", monsterId);
 const deleteAnimation = animationsDb.delete;
 const renameAnimation = rename(animationsDb);
+const updateAnimation = animationsDb.update;
 
 const createModel = modelsDb.create;
 const getAllModelsForMonster = (monsterId: number) =>
   modelsDb.getByField("monsterId", monsterId);
 const deleteModel = modelsDb.delete;
 const renameModel = rename(modelsDb);
+const updateModel = modelsDb.update;
 
 const createTexture = texturesDb.create;
 const getAllTexturesForMonster = (monsterId: number) =>
   texturesDb.getByField("monsterId", monsterId);
 const deleteTexture = texturesDb.delete;
 const renameTexture = rename(texturesDb);
+const updateTexture = texturesDb.update;
 
 const createPoser = posersDb.create;
 const getAllPosersForMonster = (monsterId: number) =>
   posersDb.getByField("monsterId", monsterId);
 const deletePoser = posersDb.delete;
 const renamePoser = rename(posersDb);
+const updatePoser = posersDb.update;
 
 export {
   createAddon,
@@ -96,16 +102,20 @@ export {
   getAllAnimationsForMonster,
   deleteAnimation,
   renameAnimation,
+  updateAnimation,
   createModel,
   getAllModelsForMonster,
   deleteModel,
   renameModel,
+  updateModel,
   createTexture,
   getAllTexturesForMonster,
   deleteTexture,
   renameTexture,
+  updateTexture,
   createPoser,
   getAllPosersForMonster,
   deletePoser,
   renamePoser,
+  updatePoser,
 };

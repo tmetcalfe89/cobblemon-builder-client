@@ -14,6 +14,10 @@ import {
   renameModel,
   renamePoser,
   renameTexture,
+  updateAnimation,
+  updateModel,
+  updatePoser,
+  updateTexture,
 } from "../api/indexeddb";
 import Monster from "../types/Monster";
 import {
@@ -49,21 +53,24 @@ export default function useMonster(monsterId: number) {
     uploadModel,
     getAllModelsForMonster,
     deleteModel,
-    renameModel
+    renameModel,
+    updateModel
   );
   const animations = useFeature(
     monsterId,
     uploadAnimations,
     getAllAnimationsForMonster,
     deleteAnimation,
-    renameAnimation
+    renameAnimation,
+    updateAnimation
   );
   const textures = useFeature(
     monsterId,
     uploadTexture,
     getAllTexturesForMonster,
     deleteTexture,
-    renameTexture
+    renameTexture,
+    updateTexture
   );
   const posers = useFeature(
     monsterId,
@@ -71,6 +78,7 @@ export default function useMonster(monsterId: number) {
     getAllPosersForMonster,
     deletePoser,
     renamePoser,
+    updatePoser,
     {
       createFromName: (name) =>
         createPoser({

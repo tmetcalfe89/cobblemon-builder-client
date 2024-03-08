@@ -1,3 +1,5 @@
+import { PoseType } from "../data/poseType";
+
 export default interface PoserFile {
   head?: string | null;
   portraitScale: number;
@@ -5,21 +7,6 @@ export default interface PoserFile {
   profileScale: number;
   profileTranslation: number[];
   poses: Pose[];
-}
-
-export enum PoseType {
-  STAND,
-  WALK,
-  SLEEP,
-  HOVER,
-  FLY,
-  FLOAT,
-  SWIM,
-  SHOULDER_LEFT,
-  SHOULDER_RIGHT,
-  PROFILE,
-  PORTRAIT,
-  NONE,
 }
 
 export interface Quirk {
