@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField } from "@mui/material";
+import { Button, SelectChangeEvent, Stack, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import NewPose from "../types/NewPose";
@@ -7,6 +7,7 @@ import { ReactNode, useCallback } from "react";
 import WithId from "../types/WithId";
 import Animation from "../types/Animation";
 import PremadePoses from "../data/premadePoses";
+import Select from "./Select";
 
 const PoseAdderSchema = yup.object().shape({
   poseName: yup.string(),
@@ -35,7 +36,7 @@ export default function PoseAdder({ onAdd, animations }: PoseAdderProps) {
     reset();
   }, [onAdd, reset]);
 
-  const handleAnimationChange = useCallback((cb: (event: SelectChangeEvent<string>, child: ReactNode) => void) => (event: SelectChangeEvent<string>, child: ReactNode) => {
+  const handleAnimationChange = useCallback((cb: (event: SelectChangeEvent<string | number>, child: ReactNode) => void) => (event: SelectChangeEvent<string | number>, child: ReactNode) => {
     const value = animations?.find((animation) => animation.id === +event.target.value)?.name;
     console.log(value);
     if (value && value in PremadePoses) {
@@ -51,24 +52,15 @@ export default function PoseAdder({ onAdd, animations }: PoseAdderProps) {
     <Controller
       control={control}
       name="animation"
-      render={({ field: { onChange, ...field } }) => <FormControl>
-        <InputLabel>Animation</InputLabel>
-        <Select {...field} onChange={handleAnimationChange(onChange)} label="Animation">
-          {animations.map(({ id, name }) => <MenuItem value={id} key={id}>{name}</MenuItem>)}
-        </Select>
-      </FormControl>}
+      render={({ field: { ref: _ref, onChange, ...field } }) =>
+        <Select {...field} onChange={handleAnimationChange(onChange)} label="Animation" options={animations.map(({ id, name }) => ({ id, name }))} />}
     />
     <Controller
       control={control}
       name="premade"
-      render={({ field }) => <FormControl>
-        <InputLabel>Premade</InputLabel>
-        <Select {...field} label="Premade">
-          {Object.entries(PremadePoses).map(([key, { name }]) => <MenuItem key={key} value={key}>{name}</MenuItem>)}
-        </Select>
-      </FormControl>}
+      render={({ field: { ref: _ref, ...field } }) =>
+        <Select {...field} label="Premade" options={Object.entries(PremadePoses).map(([key, { name }]) => ({ id: key, name }))} />}
     />
-
     <Button type="submit">Add Pose</Button>
   </Stack>
 }

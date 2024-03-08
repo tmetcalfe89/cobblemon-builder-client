@@ -3,6 +3,14 @@ import PoseSchema from "./PoseSchema";
 
 const PoserFileSchema = yup.object().shape({
   head: yup.string().nullable().optional(),
+  faint: yup
+    .number()
+    .optional()
+    .transform((currentValue) => currentValue || undefined),
+  cry: yup
+    .number()
+    .optional()
+    .transform((currentValue) => currentValue || undefined),
   portraitScale: yup.number().required(),
   portraitTranslation: yup
     .array()

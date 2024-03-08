@@ -2,6 +2,8 @@ import { PoseType } from "../data/poseType";
 
 export default interface PoserFile {
   head?: string | null;
+  faint?: number;
+  cry?: number;
   portraitScale: number;
   portraitTranslation: number[];
   profileScale: number;
