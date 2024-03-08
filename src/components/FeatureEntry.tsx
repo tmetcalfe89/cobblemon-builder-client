@@ -29,7 +29,7 @@ const FeatureEntry = <T extends Feature>({ entry, onDelete, onRename }: FeatureE
         value={editingNameValue}
         onChange={(e) => setEditingNameValue(e.target.value)} /> :
       <ListItemLink to={`${entry.id}`}>
-        <Typography variant="button">{entry.name}</Typography>
+        <Typography>{entry.name}</Typography>
       </ListItemLink>}
     <ListItemButton sx={{ flexGrow: 0 }} onClick={editingName ? handleEditName : showNameEditor}>
       <ListItemIcon sx={{ minWidth: "unset" }}>
