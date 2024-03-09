@@ -67,7 +67,7 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
         {menuHeaders && <List disablePadding>
           {menuHeaders.map(({ icon, label, path }) =>
             <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }} key={label}>
-              <ListItemLink to={path}>
+              <ListItemLink to={path} end>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText>{label}</ListItemText>
               </ListItemLink>
