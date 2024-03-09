@@ -141,7 +141,6 @@ export default function PoserEditor({ menuItems, menuHeaders, posers, animations
             <Accordion key={pose.id}>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Stack direction="row" gap={1} alignItems="center">
-                  <Typography>Pose</Typography>
                   <Chip label={pose.poseName || pose.id} />
                 </Stack>
               </AccordionSummary>

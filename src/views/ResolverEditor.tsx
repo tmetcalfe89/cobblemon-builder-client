@@ -1,4 +1,4 @@
-import { Accordion, AccordionDetails, AccordionSummary, Button, Chip, Divider, Stack, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Button, Chip, Divider, IconButton, Stack, Typography } from "@mui/material";
 import Layout, { MenuHeader, MenuItem as MenuItemType } from "../components/Layout";
 import FeatureAccess from "../types/FeatureAccess";
 import Resolver from "../types/Resolver";
@@ -8,7 +8,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import WithId from "../types/WithId";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ResolverSchema from "../schemas/ResolverSchema";
-import { Delete, ExpandMore } from "@mui/icons-material";
+import { ArrowDownward, ArrowUpward, Delete, ExpandMore } from "@mui/icons-material";
 import Poser from "../types/Poser";
 import Model from "../types/Model";
 import Texture from "../types/Texture";
@@ -41,7 +41,7 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
       return yupResolver(ResolverSchema)(data, context, options)
     }
   });
-  const { append, fields, remove } = useFieldArray({
+  const { append, fields, remove, swap: swapVariations } = useFieldArray({
     control,
     name: "resolver.variations"
   })
@@ -58,6 +58,24 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
     await resolvers.update(values.id, values);
     reset(values);
   }, [reset, resolvers]);
+
+  const handleMoveVariationUp: (i: number) => React.MouseEventHandler<HTMLButtonElement> = useCallback(
+    (i: number) =>
+      (e) => {
+        e.stopPropagation();
+        swapVariations(i, i - 1)
+      },
+    [swapVariations]
+  );
+
+  const handleMoveVariationDown: (i: number) => React.MouseEventHandler<HTMLButtonElement> = useCallback(
+    (i: number) =>
+      (e) => {
+        e.stopPropagation();
+        swapVariations(i, i + 1)
+      },
+    [swapVariations]
+  );
 
   if (!originalResolver) return <div>Oops...</div>;
 
@@ -77,12 +95,19 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
         {!!fields && <>
           <Divider />
           {fields.map((variant, i) => {
-            const key = variant.aspects.length ? variant.aspects.map(({ key, value }) => `${key}=${value}`).join(",") : "Base"
-            return <Accordion key={key}>
+            const key = variant.aspects.length ? variant.aspects.map(({ key, value }) => `${key}=${value}`) : ["base"]
+            return <Accordion key={key.join("|")}>
               <AccordionSummary expandIcon={<ExpandMore />}>
                 <Stack direction="row" gap={1} alignItems="center">
-                  <Typography>Variation</Typography>
-                  <Chip label={key} />
+                  <Stack direction="row">
+                    <IconButton disabled={i === 0} onClick={handleMoveVariationUp(i)}>
+                      <ArrowUpward />
+                    </IconButton>
+                    <IconButton disabled={i === fields.length - 1} onClick={handleMoveVariationDown(i)}>
+                      <ArrowDownward />
+                    </IconButton>
+                  </Stack>
+                  {key.map((aspect) => <Chip label={aspect} />)}
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
