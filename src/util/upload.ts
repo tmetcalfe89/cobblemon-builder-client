@@ -2,12 +2,14 @@ import {
   createAnimation,
   createModel,
   createPoser,
+  createResolver,
   createTexture,
 } from "../api/indexeddb";
 import Animation from "../types/Animation";
 import AnimationFile from "../types/AnimationFile";
 import ModelFile from "../types/ModelFile";
 import PoserFile from "../types/PoserFile";
+import ResolverFile from "../types/ResolverFile";
 
 export const uploadJson = async <T extends object>(file: File): Promise<T> => {
   const abUploaded = await uploadFile(file);
@@ -86,4 +88,17 @@ export const uploadPoser = async (file: File, monsterId: number) => {
     name: file.name,
   });
   return addedPoser;
+};
+
+export const uploadResolver = async (file: File, monsterId: number) => {
+  const rawResolver = await uploadJson<ResolverFile>(file);
+  const resolver: ResolverFile = {
+    ...rawResolver,
+  };
+  const addedResolver = await createResolver({
+    monsterId,
+    resolver,
+    name: file.name,
+  });
+  return addedResolver;
 };

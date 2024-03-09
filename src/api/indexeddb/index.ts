@@ -14,6 +14,8 @@ import Poser from "../../types/Poser";
 import poserSchema from "./schemas/posers";
 import Model from "../../types/Model";
 import Feature from "../../types/Feature";
+import Resolver from "../../types/Resolver";
+import resolverSchema from "./schemas/resolvers";
 
 const rename =
   <T extends Feature>(store: DatabaseStoreType<T>) =>
@@ -28,6 +30,7 @@ const animationsDb = db.getStore<Animation>(animationSchema.name);
 const modelsDb = db.getStore<Model>(modelSchema.name);
 const texturesDb = db.getStore<Texture>(textureSchema.name);
 const posersDb = db.getStore<Poser>(poserSchema.name);
+const resolversDb = db.getStore<Resolver>(resolverSchema.name);
 
 const createAddon = addonsDb.create;
 const getAllAddons = addonsDb.getAll;
@@ -89,6 +92,13 @@ const deletePoser = posersDb.delete;
 const renamePoser = rename(posersDb);
 const updatePoser = posersDb.update;
 
+const createResolver = resolversDb.create;
+const getAllResolversForMonster = (monsterId: number) =>
+  resolversDb.getByField("monsterId", monsterId);
+const deleteResolver = resolversDb.delete;
+const renameResolver = rename(resolversDb);
+const updateResolver = resolversDb.update;
+
 export {
   createAddon,
   getAllAddons,
@@ -118,4 +128,9 @@ export {
   deletePoser,
   renamePoser,
   updatePoser,
+  createResolver,
+  getAllResolversForMonster,
+  deleteResolver,
+  renameResolver,
+  updateResolver,
 };

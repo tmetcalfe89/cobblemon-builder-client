@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
 import {
   createPoser,
+  createResolver,
   deleteAnimation,
   deleteModel,
   deletePoser,
+  deleteResolver,
   deleteTexture,
   getAllAnimationsForMonster,
   getAllModelsForMonster,
   getAllPosersForMonster,
+  getAllResolversForMonster,
   getAllTexturesForMonster,
   getMonsterById,
   renameAnimation,
   renameModel,
   renamePoser,
+  renameResolver,
   renameTexture,
   updateAnimation,
   updateModel,
   updatePoser,
+  updateResolver,
   updateTexture,
 } from "../api/indexeddb";
 import Monster from "../types/Monster";
@@ -24,10 +29,12 @@ import {
   uploadAnimations,
   uploadModel,
   uploadPoser,
+  uploadResolver,
   uploadTexture,
 } from "../util/upload";
 import useFeature from "./useFeature";
 import defaultPoser from "../defaults/PoserFile";
+import defaultResolver from "../defaults/ResolverFile";
 
 export default function useMonster(monsterId: number) {
   const [monster, setMonster] = useState<(Monster & { id: number }) | null>(
@@ -89,11 +96,29 @@ export default function useMonster(monsterId: number) {
     }
   );
 
+  const resolvers = useFeature(
+    monsterId,
+    uploadResolver,
+    getAllResolversForMonster,
+    deleteResolver,
+    renameResolver,
+    updateResolver,
+    {
+      createFromName: (name) =>
+        createResolver({
+          monsterId,
+          name,
+          resolver: defaultResolver,
+        }),
+    }
+  );
+
   return {
     monster,
     animations,
     models,
     textures,
     posers,
+    resolvers,
   };
 }

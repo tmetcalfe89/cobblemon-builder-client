@@ -14,7 +14,7 @@ const monsterParts = ["animations", "models", "posers", "resolvers", "textures",
 export default function MonsterView() {
   const { addonId = "-1", monsterId = "-1" } = useParams();
   const { addon } = useAddon(+addonId);
-  const { monster, animations, models, textures, posers } = useMonster(+monsterId);
+  const { monster, animations, models, textures, posers, resolvers } = useMonster(+monsterId);
 
   const menuHeaders = useMemo<MenuHeader[] | undefined>(() => (addon && monster) ? ([
     {
@@ -42,6 +42,7 @@ export default function MonsterView() {
     <Route path="/models" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={models} entryComponent={FeatureEntry} />} />
     <Route path="/posers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={posers} entryComponent={FeatureEntry} />} />
     <Route path="/posers/:poserId" element={posers?.list && <PoserEditor menuHeaders={menuHeaders} menuItems={menuItems} posers={posers} animations={animations} />} />
+    <Route path="/resolvers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={resolvers} entryComponent={FeatureEntry} />} />
     <Route path="/textures" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={textures} entryComponent={ImageEntry} imageView />} />
     <Route path="*" element={<Layout menuHeaders={menuHeaders} menu={menuItems} />} />
   </Routes>
