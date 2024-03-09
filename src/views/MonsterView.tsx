@@ -11,7 +11,7 @@ import PoserEditor from "./PoserEditor";
 import Loading from "../components/Loading";
 import ResolverEditor from "./ResolverEditor";
 
-const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "spawns", "species"];
+const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "species", "spawns"];
 
 export default function MonsterView() {
   const { addonId = "-1", monsterId = "-1" } = useParams();
