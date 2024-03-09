@@ -4,7 +4,7 @@ import useBoolean from "../hooks/useBoolean";
 import { useCallback, useState } from "react";
 import WithId from "../types/WithId";
 import Feature from "../types/Feature";
-import ListItemLink from "./ListItemLink";
+import ListItemLink from "../components/ListItemLink";
 
 export interface FeatureEntryProps<T extends Feature> {
   entry: WithId<T>;

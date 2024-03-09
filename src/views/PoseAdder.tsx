@@ -7,7 +7,7 @@ import { ReactNode, useCallback } from "react";
 import WithId from "../types/WithId";
 import Animation from "../types/Animation";
 import PremadePoses from "../data/premadePoses";
-import Select from "./Select";
+import Select from "../components/Select";
 
 const PoseAdderSchema = yup.object().shape({
   poseName: yup.string(),

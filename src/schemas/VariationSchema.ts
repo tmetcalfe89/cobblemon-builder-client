@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import AspectSchema from "./AspectSchema";
 import ModelLayerSchema from "./ModelLayer";
-import { Variation } from "../types/ResolverFile";
+import Variation from "../types/Variation";
 
 const VariationSchema: yup.ObjectSchema<Variation> = yup.object().shape({
   aspects: yup.array().of(AspectSchema).required(),

@@ -1,12 +1,12 @@
 import { Accordion, AccordionDetails, AccordionSummary, Button, Chip, Divider, Stack, Typography } from "@mui/material";
 import FeatureAccess from "../types/FeatureAccess";
 import Poser from "../types/Poser";
-import Layout, { MenuHeader, MenuItem as MenuItemType } from "./Layout";
+import Layout, { MenuHeader, MenuItem as MenuItemType } from "../components/Layout";
 import { useCallback, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import WithId from "../types/WithId";
-import NullableTextField from "./NullableTextField";
-import NumberField from "./NumberField";
+import NullableTextField from "../components/NullableTextField";
+import NumberField from "../components/NumberField";
 import { ExpandMore } from "@mui/icons-material";
 import { Controller, useFieldArray, useForm } from "react-hook-form";
 import defaultPose from "../defaults/Pose";
@@ -18,13 +18,13 @@ import NewPose from "../types/NewPose";
 import useBoolean from "../hooks/useBoolean";
 import Animation from "../types/Animation";
 import PremadePoses from "../data/premadePoses";
-import Select from "./Select";
+import Select from "../components/Select";
 
 export interface PoserEditorProps {
   menuHeaders?: MenuHeader[];
   menuItems?: MenuItemType[];
   posers: FeatureAccess<Poser>;
-  animations: FeatureAccess<Animation>;
+  animations: WithId<Animation>[];
 }
 
 export default function PoserEditor({ menuItems, menuHeaders, posers, animations }: PoserEditorProps) {
@@ -47,27 +47,27 @@ export default function PoserEditor({ menuItems, menuHeaders, posers, animations
     reset(values);
   }, [posers, reset]);
 
-  const addPose = useCallback(({ animation, poseName, premade }: NewPose) => {
-    console.log(animation, animations.list);
+  const addPose = useCallback(({ animation, poseName, premade }: NewPose, { keepOpen }: { keepOpen: boolean } = { keepOpen: false }) => {
     append({
       ...defaultPose,
       ...(premade !== undefined ? PremadePoses[premade].data : {}),
-      poseName: poseName || animations.list?.find((animationI) => animationI.id === +animation)?.name || "",
+      poseName: poseName || animations.find((animationI) => animationI.id === +animation)?.name || "",
       animations: animation !== undefined ? [+animation] : []
     })
-    closeAdder();
-  }, [animations.list, append, closeAdder]);
+    if (!keepOpen) {
+      closeAdder();
+    }
+  }, [animations, append, closeAdder]);
 
-  const defaultableAnimations = useMemo(() => animations.list
-    ?.filter((animation) => animation.name in PremadePoses && !getValues("poser.poses").some((pose) => pose.poseName === animation.name)), [animations.list, getValues]);
-
-  const animationsList = animations.list;
-  if (!animationsList) return <div>Loading...</div>;
+  const poses = getValues("poser.poses");
+  const defaultableAnimations = useMemo(() => animations
+    ?.filter((animation) => animation.name in PremadePoses && !poses.some((pose) => pose.poseName === animation.name)),
+    [animations, poses]);
 
   return <Layout menu={menuItems} menuHeaders={menuHeaders}>
     <Stack sx={{ height: "100%" }} gap={2}>
       <Typography variant="h1">Poser - {getValues("name")}</Typography>
-      <Stack flexGrow={1} gap={1}>
+      <Stack flexGrow={1} gap={1} minHeight={0} flexBasis={0} overflow="auto">
         <NullableTextField {...register("poser.head")} label="Head" />
         <Divider>Position & Scale</Divider>
         <Accordion>
@@ -103,7 +103,7 @@ export default function PoserEditor({ menuItems, menuHeaders, posers, animations
           render={({ field: { ref: _ref, ...field } }) => <Select
             {...field}
             label="Faint"
-            options={animationsList.map(({ id, name }) => ({ id, name }))}
+            options={animations.map(({ id, name }) => ({ id, name }))}
             clearable
           />}
         />
@@ -113,12 +113,30 @@ export default function PoserEditor({ menuItems, menuHeaders, posers, animations
           render={({ field: { ref: _ref, ...field } }) => <Select
             {...field}
             label="Cry"
-            options={animationsList.map(({ id, name }) => ({ id, name }))}
+            options={animations.map(({ id, name }) => ({ id, name }))}
             clearable
           />}
         />
         <Divider>Poses</Divider>
+        <Accordion expanded={adderOpen} onChange={toggleAdder}>
+          <AccordionSummary expandIcon={<ExpandMore />}>Add Pose</AccordionSummary>
+          <AccordionDetails>
+            <Stack gap={1}>
+              <Stack direction="row" gap={1}>
+                {defaultableAnimations
+                  ?.map((animation) =>
+                    <Button
+                      key={animation.id}
+                      variant="outlined"
+                      sx={{ textAlign: "start" }}
+                      onClick={() => addPose({ animation: animation.id, poseName: animation.name, premade: animation.name }, { keepOpen: true })}>{animation.name}</Button>)}
+              </Stack>
+              <PoseAdder onAdd={addPose} animations={animations} />
+            </Stack>
+          </AccordionDetails>
+        </Accordion>
         {!!fields.length && <>
+          <Divider />
           {fields.map((pose, i) =>
             <Accordion key={pose.id}>
               <AccordionSummary expandIcon={<ExpandMore />}>
@@ -128,20 +146,11 @@ export default function PoserEditor({ menuItems, menuHeaders, posers, animations
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <PoseEditor onDelete={() => remove(i)} index={i} register={register} control={control} animations={animations.list} />
+                <PoseEditor onDelete={() => remove(i)} index={i} register={register} control={control} animations={animations} />
               </AccordionDetails>
             </Accordion>
           )}
-          <Divider />
         </>}
-        {defaultableAnimations
-          ?.map((animation) => <Button variant="outlined" sx={{ textAlign: "start" }} onClick={() => addPose({ animation: animation.id, poseName: animation.name, premade: animation.name })}>Create Default for {animation.name}</Button>)}
-        <Accordion expanded={adderOpen} onChange={toggleAdder}>
-          <AccordionSummary expandIcon={<ExpandMore />}>Add Pose</AccordionSummary>
-          <AccordionDetails>
-            <PoseAdder onAdd={addPose} animations={animations.list} />
-          </AccordionDetails>
-        </Accordion>
       </Stack>
       <Stack direction="row" gap={3} justifyContent="stretch" sx={{ "& > *": { flexGrow: 1 } }}>
         <Button disabled={!isDirty} onClick={handleSubmit(handleUpdate)}>Update</Button>

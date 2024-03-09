@@ -1,10 +1,10 @@
 import { Button, Stack, TextField } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { Control, Controller, UseFormRegister } from "react-hook-form";
-import NumberField from "./NumberField";
+import NumberField from "../components/NumberField.tsx";
 import { getEnumValues } from "../util/tsUtil.ts";
 import { PoseType } from "../data/poseType.ts";
-import Autocomplete from "./Autocomplete.tsx";
+import Autocomplete from "../components/Autocomplete.tsx";
 import WithId from "../types/WithId";
 import Poser from "../types/Poser";
 import Animation from "../types/Animation";
@@ -44,16 +44,18 @@ export default function PoseEditor({ onDelete, register, control, index, animati
     <Controller
       name={`${prefix}${index}.animations`}
       control={control}
-      render={({ field: { ref: _ref, ...field } }) => <Autocomplete
-        {...field}
-        options={animations.map(({ id }) => id)}
-        onChange={(_, data) => {
-          field.onChange(data);
-        }}
-        label="Animations"
-        multiple
-        getOptionLabel={(id) => animations.find((animation) => animation.id === id)!.name}
-      />}
+      render={({ field: { ref: _ref, ...field } }) =>
+        <Autocomplete
+          {...field}
+          options={animations.map(({ id }) => id)}
+          onChange={(_, data) => {
+            field.onChange(data);
+          }}
+          label="Animations"
+          multiple
+          getOptionLabel={(id) => animations.find((animation) => animation.id === id)!.name}
+        />
+      }
     />
 
     <Button onClick={onDelete}><Delete /></Button>

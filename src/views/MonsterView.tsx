@@ -5,9 +5,11 @@ import { useMemo } from "react";
 import { Folder, Pets } from "@mui/icons-material";
 import useMonster from "../hooks/useMonster";
 import FeatureView from "./FeatureView";
-import FeatureEntry from "../components/FeatureEntry";
-import ImageEntry from "../components/ImageEntry";
-import PoserEditor from "../components/PoserEditor";
+import FeatureEntry from "./FeatureEntry";
+import ImageEntry from "./ImageEntry";
+import PoserEditor from "./PoserEditor";
+import Loading from "../components/Loading";
+import ResolverEditor from "./ResolverEditor";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "spawns", "species"];
 
@@ -41,8 +43,9 @@ export default function MonsterView() {
     <Route path="/animations" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={animations} entryComponent={FeatureEntry} />} />
     <Route path="/models" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={models} entryComponent={FeatureEntry} />} />
     <Route path="/posers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={posers} entryComponent={FeatureEntry} />} />
-    <Route path="/posers/:poserId" element={posers?.list && <PoserEditor menuHeaders={menuHeaders} menuItems={menuItems} posers={posers} animations={animations} />} />
+    <Route path="/posers/:poserId" element={<Loading loading={!(posers?.list && animations?.list)}><PoserEditor menuHeaders={menuHeaders} menuItems={menuItems} posers={posers} animations={animations.list!} /></Loading>} />
     <Route path="/resolvers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={resolvers} entryComponent={FeatureEntry} />} />
+    <Route path="/resolvers/:resolverId" element={<Loading loading={!(resolvers?.list && posers?.list && models?.list && textures?.list)}><ResolverEditor menuHeaders={menuHeaders} menuItems={menuItems} resolvers={resolvers} posers={posers.list!} models={models.list!} textures={textures.list!} /></Loading>} />
     <Route path="/textures" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={textures} entryComponent={ImageEntry} imageView />} />
     <Route path="*" element={<Layout menuHeaders={menuHeaders} menu={menuItems} />} />
   </Routes>

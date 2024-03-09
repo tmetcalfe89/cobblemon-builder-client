@@ -1,4 +1,4 @@
-import { Pose } from "../types/PoserFile";
+import Pose from "../types/Pose";
 
 const defaultPose: Pose = {
   poseName: "",

@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { VaryingModelTextureSupplier } from "../types/ResolverFile";
+import VaryingModelTextureSupplier from "../types/VaryingModelTextureSupplier";
 
 const ModelTextureSupplierSchema: yup.Lazy<
   string | VaryingModelTextureSupplier

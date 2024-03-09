@@ -3,7 +3,7 @@ import { useCallback } from "react";
 import FileInput from "../components/FileInput";
 import Layout, { MenuHeader, MenuItem } from "../components/Layout";
 import FeatureAccess from "../types/FeatureAccess";
-import { FeatureEntryProps } from "../components/FeatureEntry";
+import { FeatureEntryProps } from "./FeatureEntry";
 import Feature from "../types/Feature";
 
 export interface FeatureViewProps<T extends Feature> {

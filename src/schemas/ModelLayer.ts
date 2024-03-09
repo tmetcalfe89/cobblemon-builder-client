@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import ColorSchema from "./Color";
 import ModelTextureSupplierSchema from "./ModelTextureSupplier";
-import { ModelLayer } from "../types/ResolverFile";
+import ModelLayer from "../types/ModelLayer";
 
 const ModelLayerSchema: yup.ObjectSchema<ModelLayer> = yup.object().shape({
   name: yup.string().required(),

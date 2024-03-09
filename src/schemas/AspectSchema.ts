@@ -1,5 +1,5 @@
 import * as yup from "yup";
-import { Aspect } from "../types/ResolverFile";
+import Aspect from "../types/Aspect";
 
 const AspectSchema: yup.ObjectSchema<Aspect> = yup.object().shape({
   key: yup.string().required(),
