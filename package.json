@@ -20,7 +20,6 @@
     "react-hook-form": "^7.51.0",
     "react-router-dom": "^6.22.2",
     "the-promised-indexeddb": "github:tmetcalfe89/the-promised-indexeddb",
-    "underscore": "^1.13.6",
     "yup": "^1.4.0"
   },
   "devDependencies": {

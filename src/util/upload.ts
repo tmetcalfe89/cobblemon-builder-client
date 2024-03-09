@@ -10,6 +10,7 @@ import AnimationFile from "../types/AnimationFile";
 import ModelFile from "../types/ModelFile";
 import PoserFile from "../types/PoserFile";
 import ResolverFile from "../types/ResolverFile";
+import { checkForRootFolderAndFix } from "./model";
 
 export const uploadJson = async <T extends object>(file: File): Promise<T> => {
   const abUploaded = await uploadFile(file);
@@ -42,8 +43,8 @@ function uploadFile(file: File): Promise<ArrayBuffer> {
 export const uploadModel = async (file: File, monsterId: number) => {
   const model = await uploadJson<ModelFile>(file);
   const addedModel = await createModel({
-    model,
-    name: model["minecraft:geometry"][0].description.identifier,
+    model: checkForRootFolderAndFix(model),
+    name: file.name,
     monsterId,
   });
   return addedModel;
