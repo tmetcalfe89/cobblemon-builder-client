@@ -57,7 +57,6 @@ export default function PoseEditor({ onDelete, register, control, index, animati
         />
       }
     />
-
     <Button onClick={onDelete}><Delete /></Button>
   </Stack>
 }

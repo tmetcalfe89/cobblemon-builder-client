@@ -8,13 +8,14 @@ import { useFieldArray, useForm } from "react-hook-form";
 import WithId from "../types/WithId";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ResolverSchema from "../schemas/ResolverSchema";
-import { ArrowDownward, ArrowUpward, Delete, ExpandMore } from "@mui/icons-material";
+import { ArrowDownward, ArrowUpward, ExpandMore } from "@mui/icons-material";
 import Poser from "../types/Poser";
 import Model from "../types/Model";
 import Texture from "../types/Texture";
 import VariationAdder from "./VariationAdder";
 import defaultVariation from "../defaults/Variation";
 import Variation from "../types/Variation";
+import VariationEditor from "./VariationEditor";
 
 export interface ResolverEditorProps {
   menuHeaders?: MenuHeader[];
@@ -41,17 +42,17 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
       return yupResolver(ResolverSchema)(data, context, options)
     }
   });
-  const { append, fields, remove, swap: swapVariations } = useFieldArray({
+  const { append: addVariation, fields: variations, remove: removeVariation, swap: swapVariations } = useFieldArray({
     control,
     name: "resolver.variations"
   })
 
-  const addVariation = useCallback((overrides: Partial<Variation>) => {
-    append({
+  const handleAddVariation = useCallback((overrides: Partial<Variation>) => {
+    addVariation({
       ...defaultVariation,
       ...overrides
     })
-  }, [append]);
+  }, [addVariation]);
 
   const handleUpdate = useCallback(async (values: WithId<Resolver>) => {
     console.log(values);
@@ -88,13 +89,13 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
           <AccordionSummary expandIcon={<ExpandMore />}>Add Variation</AccordionSummary>
           <AccordionDetails>
             <Stack gap={1}>
-              <VariationAdder onAdd={addVariation} models={models} posers={posers} textures={textures} />
+              <VariationAdder onAdd={handleAddVariation} models={models} posers={posers} textures={textures} />
             </Stack>
           </AccordionDetails>
         </Accordion>
-        {!!fields && <>
+        {!!variations && <>
           <Divider />
-          {fields.map((variant, i) => {
+          {variations.map((variant, i) => {
             const key = variant.aspects.length ? variant.aspects.map(({ key, value }) => `${key}=${value}`) : ["base"]
             return <Accordion key={key.join("|")}>
               <AccordionSummary expandIcon={<ExpandMore />}>
@@ -103,7 +104,7 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
                     <IconButton disabled={i === 0} onClick={handleMoveVariationUp(i)}>
                       <ArrowUpward />
                     </IconButton>
-                    <IconButton disabled={i === fields.length - 1} onClick={handleMoveVariationDown(i)}>
+                    <IconButton disabled={i === variations.length - 1} onClick={handleMoveVariationDown(i)}>
                       <ArrowDownward />
                     </IconButton>
                   </Stack>
@@ -111,11 +112,13 @@ export default function ResolverEditor({ menuHeaders, menuItems, resolvers, mode
                 </Stack>
               </AccordionSummary>
               <AccordionDetails>
-                <Stack>
-                  <Button onClick={() => remove(i)}>
-                    <Delete />
-                  </Button>
-                </Stack>
+                <VariationEditor
+                  models={models}
+                  posers={posers}
+                  textures={textures}
+                  control={control}
+                  index={i} onDelete={() => removeVariation(i)}
+                />
               </AccordionDetails>
             </Accordion>
           })}
