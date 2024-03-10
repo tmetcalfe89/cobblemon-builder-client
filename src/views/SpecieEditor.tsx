@@ -108,7 +108,7 @@ export default function SpecieEditor({ specie, onUpdate }: SpecieEditorProps) {
           />
         }
       />
-      <NumberField label="Egg Cycles" {...register("species.baseExperienceYield")} />
+      <NumberField label="Egg Cycles" {...register("species.eggCycles")} />
     </Stack>
     <NumberField label="Base Friendship" {...register("species.baseFriendship")} />
     <Divider>EV Yield</Divider>
@@ -137,6 +137,17 @@ export default function SpecieEditor({ specie, onUpdate }: SpecieEditorProps) {
       <NumberField {...register("species.height")} label="Height" />
       <NumberField {...register("species.weight")} label="Weight" />
     </Stack>
+    <Divider>Size & Hitbox</Divider>
+    <Stack direction="row" sx={{ "& > *": { flexGrow: 1, minWidth: 0, flexBasis: 0 } }}>
+      <NumberField {...register("species.baseScale")} label="Base Scale" />
+      <NumberField {...register("species.hitbox.width")} label="Width" />
+      <NumberField {...register("species.hitbox.height")} label="Height" />
+    </Stack>
+    <Controller
+      control={control}
+      name="species.hitbox.fixed"
+      render={({ field: { ref: _ref, value, ...field } }) => <FormControlLabel control={<Switch {...field} checked={value} />} label="Fixed Hitbox" />}
+    />
     <Button onClick={handleSubmit(onUpdate)}>Update</Button>
   </Stack>
 }
