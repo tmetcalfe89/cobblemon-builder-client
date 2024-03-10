@@ -1,8 +1,10 @@
+import { FC } from "react";
+
 interface LoadingProps {
   loading: boolean;
-  children: React.ReactNode;
+  render: FC;
 }
 
-export default function Loading({ loading, children }: LoadingProps) {
-  return !loading && children;
+export default function Loading({ loading, render: Render }: LoadingProps) {
+  return !loading && <Render />;
 }
