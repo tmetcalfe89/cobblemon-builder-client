@@ -3,13 +3,16 @@ import {
   createModel,
   createPoser,
   createResolver,
+  createSpecies,
   createTexture,
 } from "../api/indexeddb";
+import { SpeciesFileSchema } from "../schemas/SpeciesFile";
 import Animation from "../types/Animation";
 import AnimationFile from "../types/AnimationFile";
 import ModelFile from "../types/ModelFile";
 import PoserFile from "../types/PoserFile";
 import ResolverFile from "../types/ResolverFile";
+import { SpeciesFile } from "../types/SpeciesFile";
 import { checkForRootFolderAndFix } from "./model";
 
 export const uploadJson = async <T extends object>(file: File): Promise<T> => {
@@ -102,4 +105,14 @@ export const uploadResolver = async (file: File, monsterId: number) => {
     name: file.name,
   });
   return addedResolver;
+};
+
+export const uploadSpecies = async (file: File, monsterId: number) => {
+  const rawSpecies = await uploadJson<SpeciesFile>(file);
+  const addedSpecies = await createSpecies({
+    monsterId,
+    species: SpeciesFileSchema.cast(rawSpecies),
+    name: file.name,
+  });
+  return addedSpecies;
 };

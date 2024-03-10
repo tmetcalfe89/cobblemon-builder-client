@@ -10,13 +10,14 @@ import ImageEntry from "./ImageEntry";
 import PoserEditor from "./PoserEditor";
 import Loading from "../components/Loading";
 import ResolverEditor from "./ResolverEditor";
+import SpeciesEditor from "./SpeciesEditor";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "species", "spawns"];
 
 export default function MonsterView() {
   const { addonId = "-1", monsterId = "-1" } = useParams();
   const { addon } = useAddon(+addonId);
-  const { monster, animations, models, textures, posers, resolvers } = useMonster(+monsterId);
+  const { monster, animations, models, textures, posers, resolvers, species } = useMonster(+monsterId);
 
   const menuHeaders = useMemo<MenuHeader[] | undefined>(() => (addon && monster) ? ([
     {
@@ -43,10 +44,11 @@ export default function MonsterView() {
     <Route path="/animations" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={animations} entryComponent={FeatureEntry} />} />
     <Route path="/models" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={models} entryComponent={FeatureEntry} />} />
     <Route path="/posers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={posers} entryComponent={FeatureEntry} />} />
-    <Route path="/posers/:poserId" element={<Loading loading={!(posers?.list && animations?.list)}><PoserEditor menuHeaders={menuHeaders} menuItems={menuItems} posers={posers} animations={animations.list!} /></Loading>} />
+    <Route path="/posers/:poserId" element={<Loading loading={!(posers?.list && animations?.list)} render={() => <PoserEditor menuHeaders={menuHeaders} menuItems={menuItems} posers={posers} animations={animations.list!} />} />} />
     <Route path="/resolvers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={resolvers} entryComponent={FeatureEntry} />} />
-    <Route path="/resolvers/:resolverId" element={<Loading loading={!(resolvers?.list && posers?.list && models?.list && textures?.list)}><ResolverEditor menuHeaders={menuHeaders} menuItems={menuItems} resolvers={resolvers} posers={posers.list!} models={models.list!} textures={textures.list!} /></Loading>} />
+    <Route path="/resolvers/:resolverId" element={<Loading loading={!(resolvers?.list && posers?.list && models?.list && textures?.list)} render={() => <ResolverEditor menuHeaders={menuHeaders} menuItems={menuItems} resolvers={resolvers} posers={posers.list!} models={models.list!} textures={textures.list!} />} />} />
     <Route path="/textures" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={textures} entryComponent={ImageEntry} imageView />} />
+    <Route path="/species" element={<Loading loading={!(species?.list && monster)} render={() => <SpeciesEditor menuHeaders={menuHeaders} menuItems={menuItems} species={species} monster={monster!} />} />} />
     <Route path="*" element={<Layout menuHeaders={menuHeaders} menu={menuItems} />} />
   </Routes>
 }

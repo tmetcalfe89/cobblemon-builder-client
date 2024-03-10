@@ -2,26 +2,31 @@ import { useEffect, useState } from "react";
 import {
   createPoser,
   createResolver,
+  createSpecies,
   deleteAnimation,
   deleteModel,
   deletePoser,
   deleteResolver,
+  deleteSpecies,
   deleteTexture,
   getAllAnimationsForMonster,
   getAllModelsForMonster,
   getAllPosersForMonster,
   getAllResolversForMonster,
+  getAllSpeciesForMonster,
   getAllTexturesForMonster,
   getMonsterById,
   renameAnimation,
   renameModel,
   renamePoser,
   renameResolver,
+  renameSpecies,
   renameTexture,
   updateAnimation,
   updateModel,
   updatePoser,
   updateResolver,
+  updateSpecies,
   updateTexture,
 } from "../api/indexeddb";
 import Monster from "../types/Monster";
@@ -30,11 +35,13 @@ import {
   uploadModel,
   uploadPoser,
   uploadResolver,
+  uploadSpecies,
   uploadTexture,
 } from "../util/upload";
 import useFeature from "./useFeature";
 import defaultPoser from "../defaults/PoserFile";
 import defaultResolver from "../defaults/ResolverFile";
+import { SpeciesFileSchema } from "../schemas/SpeciesFile";
 
 export default function useMonster(monsterId: number) {
   const [monster, setMonster] = useState<(Monster & { id: number }) | null>(
@@ -113,6 +120,23 @@ export default function useMonster(monsterId: number) {
     }
   );
 
+  const species = useFeature(
+    monsterId,
+    uploadSpecies,
+    getAllSpeciesForMonster,
+    deleteSpecies,
+    renameSpecies,
+    updateSpecies,
+    {
+      createFromName: (name) =>
+        createSpecies({
+          monsterId,
+          name,
+          species: SpeciesFileSchema.cast({}),
+        }),
+    }
+  );
+
   return {
     monster,
     animations,
@@ -120,5 +144,6 @@ export default function useMonster(monsterId: number) {
     textures,
     posers,
     resolvers,
+    species,
   };
 }

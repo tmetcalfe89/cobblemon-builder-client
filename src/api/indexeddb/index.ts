@@ -16,6 +16,8 @@ import Model from "../../types/Model";
 import Feature from "../../types/Feature";
 import Resolver from "../../types/Resolver";
 import resolverSchema from "./schemas/resolvers";
+import Species from "../../types/Species";
+import speciesSchema from "./schemas/species";
 
 const rename =
   <T extends Feature>(store: DatabaseStoreType<T>) =>
@@ -31,6 +33,7 @@ const modelsDb = db.getStore<Model>(modelSchema.name);
 const texturesDb = db.getStore<Texture>(textureSchema.name);
 const posersDb = db.getStore<Poser>(poserSchema.name);
 const resolversDb = db.getStore<Resolver>(resolverSchema.name);
+const speciesDb = db.getStore<Species>(speciesSchema.name);
 
 const createAddon = addonsDb.create;
 const getAllAddons = addonsDb.getAll;
@@ -99,6 +102,13 @@ const deleteResolver = resolversDb.delete;
 const renameResolver = rename(resolversDb);
 const updateResolver = resolversDb.update;
 
+const createSpecies = speciesDb.create;
+const getAllSpeciesForMonster = (monsterId: number) =>
+  speciesDb.getByField("monsterId", monsterId);
+const deleteSpecies = speciesDb.delete;
+const renameSpecies = rename(speciesDb);
+const updateSpecies = speciesDb.update;
+
 export {
   createAddon,
   getAllAddons,
@@ -133,4 +143,9 @@ export {
   deleteResolver,
   renameResolver,
   updateResolver,
+  createSpecies,
+  getAllSpeciesForMonster,
+  deleteSpecies,
+  renameSpecies,
+  updateSpecies,
 };
