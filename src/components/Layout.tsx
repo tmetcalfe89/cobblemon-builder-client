@@ -1,5 +1,5 @@
-import { Close, House } from "@mui/icons-material";
-import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, TextField } from "@mui/material";
+import { Close, House, MoreVert } from "@mui/icons-material";
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Menu, MenuItem, Stack, TextField } from "@mui/material";
 import useBoolean from "../hooks/useBoolean";
 import { useCallback, useEffect, useState } from "react";
 import ListItemLink from "./ListItemLink";
@@ -7,7 +7,7 @@ import ListItemLink from "./ListItemLink";
 export interface LayoutProps {
   menu?: MenuItem[];
   children?: React.ReactNode;
-  onMiniFormSubmit?: (name: string) => void;
+  onMiniFormSubmit?: (name: string) => Promise<void>;
   miniFormLabel?: string;
   menuHeaders?: MenuHeader[];
 }
@@ -23,12 +23,22 @@ export interface MenuHeader {
   label: string;
   path: string;
   icon: React.ReactNode;
+  actions?: {
+    icon: React.ReactNode;
+    label: string;
+    onAct: () => void;
+  }[];
 }
 
 export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children, menuHeaders }: LayoutProps) {
   const [miniFormOpen, { on: openMiniForm, off: closeMiniForm }] = useBoolean(false);
   const [miniFormValue, setMiniFormValue] = useState<string>("");
   const [miniFormError, setMiniFormError] = useState<boolean>(false);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
+  const handleAct = useCallback((action?: () => void) => () => {
+    action?.();
+    setMenuAnchorEl(null);
+  }, []);
 
   const handleMiniFormSubmit = useCallback(async () => {
     if (onMiniFormSubmit) {
@@ -66,12 +76,35 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
           </ListItem>
         </List>
         {menuHeaders && <List disablePadding>
-          {menuHeaders.map(({ icon, label, path }) =>
-            <ListItem disablePadding sx={{ borderBottom: 1, borderColor: "divider" }} key={label}>
+          {menuHeaders.map(({ icon, label, path, actions }) =>
+            <ListItem sx={{ borderBottom: 1, borderColor: "divider" }} key={label} disablePadding>
               <ListItemLink to={path} end>
                 <ListItemIcon>{icon}</ListItemIcon>
                 <ListItemText>{label}</ListItemText>
               </ListItemLink>
+              {!!actions?.length && <>
+                <ListItemButton sx={{ flexGrow: 0, alignSelf: "stretch" }} onClick={(e) => setMenuAnchorEl(e.currentTarget)}>
+                  <ListItemIcon sx={{ minWidth: "unset" }}>
+                    <MoreVert />
+                  </ListItemIcon>
+                </ListItemButton>
+                <Menu
+                  id="basic-menu"
+                  anchorEl={menuAnchorEl}
+                  open={!!menuAnchorEl}
+                  onClose={handleAct()}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                >
+                  {actions.map(({ icon, label, onAct }) =>
+                    <MenuItem key={label} onClick={handleAct(onAct)}>
+                      <ListItemIcon>{icon}</ListItemIcon>
+                      <ListItemText>{label}</ListItemText>
+                    </MenuItem>
+                  )}
+                </Menu>
+              </>}
             </ListItem>
           )}
         </List>}
