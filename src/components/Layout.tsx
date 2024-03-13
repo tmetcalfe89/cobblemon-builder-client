@@ -7,7 +7,7 @@ import ListItemLink from "./ListItemLink";
 export interface LayoutProps {
   menu?: MenuItem[];
   children?: React.ReactNode;
-  onMiniFormSubmit?: (name: string) => Promise<boolean>;
+  onMiniFormSubmit?: (name: string) => void;
   miniFormLabel?: string;
   menuHeaders?: MenuHeader[];
 }
@@ -32,9 +32,10 @@ export default function Layout({ menu, onMiniFormSubmit, miniFormLabel, children
 
   const handleMiniFormSubmit = useCallback(async () => {
     if (onMiniFormSubmit) {
-      if (await onMiniFormSubmit(miniFormValue)) {
+      try {
+        await onMiniFormSubmit(miniFormValue)
         closeMiniForm();
-      } else {
+      } catch (error) {
         setMiniFormError(true);
       }
     } else {
