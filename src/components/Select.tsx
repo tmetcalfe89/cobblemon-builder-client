@@ -18,13 +18,13 @@ interface SelectProps extends Omit<MuiSelectProps<string | number>, 'onChange' |
   variant?: SelectVariants;
 }
 
-const Select: React.FC<SelectProps> = ({ label, options, onChange, clearable, variant = "outlined", value, ...props }) => {
+const Select: React.FC<SelectProps> = ({ label, options, onChange, clearable, variant = "outlined", value, sx, ...props }) => {
   const handleClear = () => {
     onChange({ target: { value: "" } } as SelectChangeEvent<string | number>, null);
   };
 
   return (
-    <FormControl variant={variant}>
+    <FormControl variant={variant} sx={sx}>
       <InputLabel>{label}</InputLabel>
       <MuiSelect
         {...props}

@@ -31,7 +31,6 @@ const Autocomplete = <T, Multiple extends boolean | undefined, DisableClearable 
       onChange={handleChange}
       value={value}
       renderInput={(params) => <TextField {...params} label={label} />}
-      disableCloseOnSelect
     />
   );
 };
