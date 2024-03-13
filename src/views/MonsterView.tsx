@@ -2,7 +2,7 @@ import { Route, Routes, useParams } from "react-router-dom";
 import Layout, { MenuHeader, MenuItem } from "../components/Layout";
 import useAddon from "../hooks/useAddon";
 import { useMemo } from "react";
-import { Folder, Pets } from "@mui/icons-material";
+import { Download, Folder, Pets } from "@mui/icons-material";
 import useMonster from "../hooks/useMonster";
 import FeatureView from "./FeatureView";
 import FeatureEntry from "./FeatureEntry";
@@ -12,6 +12,7 @@ import Loading from "../components/Loading";
 import ResolverEditor from "./ResolverEditor";
 import SpeciesEditor from "./SpeciesEditor";
 import useGitlab from "../hooks/useGitlab";
+import { exportAddon } from "../util/addon";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "species", "spawns"];
 
@@ -26,6 +27,13 @@ export default function MonsterView() {
       label: addon.name,
       path: `/addons/${addon.id}`,
       icon: <Folder />,
+      actions: [
+        {
+          icon: <Download />,
+          label: "Export",
+          onAct: () => exportAddon(addon.id)
+        }
+      ]
     },
     {
       label: monster.name,

@@ -45,6 +45,7 @@ const deleteAddon = async (addonId: number) => {
     await deleteMonster(monster.id);
   }
 };
+const updateAddon = addonsDb.update;
 
 const createMonster = monstersDb.create;
 const getAllMonstersForAddon = (addonId: number) =>
@@ -114,6 +115,7 @@ export {
   getAllAddons,
   getAddonById,
   deleteAddon,
+  updateAddon,
   createMonster,
   getAllMonstersForAddon,
   deleteMonster,

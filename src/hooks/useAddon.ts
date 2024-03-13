@@ -5,6 +5,7 @@ import {
   getAllMonstersForAddon,
   createMonster as idbCreateMonster,
   deleteMonster as idbDeleteMonster,
+  updateAddon as idbUpdateAddon,
 } from "../api/indexeddb";
 import Monster from "../types/Monster";
 
@@ -42,6 +43,10 @@ export default function useAddon(addonId: number) {
     };
   }, [addonId]);
 
+  const updateAddon = useCallback(async (id: number, data: Addon) => {
+    setAddon(await idbUpdateAddon(id, data));
+  }, []);
+
   const createMonster = useCallback(
     async (name: string) => {
       const newMonster = await idbCreateMonster({ name, addonId: +addonId });
@@ -55,5 +60,5 @@ export default function useAddon(addonId: number) {
     setMonsters((p) => p?.filter((e) => e.id !== monsterId) || null);
   }, []);
 
-  return { addon, monsters, createMonster, deleteMonster };
+  return { addon, monsters, createMonster, deleteMonster, updateAddon };
 }
