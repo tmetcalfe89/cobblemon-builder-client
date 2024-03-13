@@ -7,13 +7,11 @@ export default function AccountView() {
   const { addons, createAddon, deleteAddon } = useAccount();
 
   const handleCreateAddon = useCallback(async (name: string) => {
-    if (!name) return false;
+    if (!name) return;
     try {
       await createAddon(name);
-      return true;
     } catch (error) {
       console.error(error);
-      return false;
     }
   }, [createAddon]);
 
