@@ -9,10 +9,7 @@ export interface OptionalFeatureParams<T> {
 
 const useFeature = <T extends Feature>(
   id: number,
-  upload: (
-    file: File,
-    id: number
-  ) => Promise<(T & { id: number }) | WithId<T>[]>,
+  upload: (file: File, id: number) => Promise<WithId<T> | WithId<T>[]>,
   getAllForId: (id: number) => Promise<WithId<T>[]>,
   deleteOne: (id: number) => Promise<void>,
   rename: (id: number, name: string) => Promise<WithId<T>>,
@@ -37,17 +34,12 @@ const useFeature = <T extends Feature>(
   }, [getAllForId, id]);
 
   const handleCreateFromFile = useCallback(
-    async (file: File) => {
-      try {
-        const entry = await upload(file, id);
-        setList(
-          (p) => p?.concat(...(Array.isArray(entry) ? entry : [entry])) || null
-        );
-        return true;
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
+    async (file: File): Promise<WithId<T> | WithId<T>[]> => {
+      const entry = await upload(file, id);
+      setList(
+        (p) => p?.concat(...(Array.isArray(entry) ? entry : [entry])) || null
+      );
+      return entry;
     },
     [id, upload]
   );
@@ -61,18 +53,13 @@ const useFeature = <T extends Feature>(
   );
 
   const handleCreateFromName = useCallback(
-    async (name: string): Promise<boolean> => {
-      if (!createFromName) return false;
-      try {
-        const entry = await createFromName(name);
-        setList(
-          (p) => p?.concat(...(Array.isArray(entry) ? entry : [entry])) || null
-        );
-        return true;
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
+    async (name: string): Promise<WithId<T>> => {
+      if (!createFromName) throw new Error("Cannot create from name");
+      const entry = await createFromName(name);
+      setList(
+        (p) => p?.concat(...(Array.isArray(entry) ? entry : [entry])) || null
+      );
+      return entry;
     },
     [createFromName]
   );

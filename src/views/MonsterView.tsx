@@ -11,6 +11,7 @@ import PoserEditor from "./PoserEditor";
 import Loading from "../components/Loading";
 import ResolverEditor from "./ResolverEditor";
 import SpeciesEditor from "./SpeciesEditor";
+import useGitlab from "../hooks/useGitlab";
 
 const monsterParts = ["animations", "models", "posers", "resolvers", "textures", "species", "spawns"];
 
@@ -18,6 +19,7 @@ export default function MonsterView() {
   const { addonId = "-1", monsterId = "-1" } = useParams();
   const { addon } = useAddon(+addonId);
   const { monster, animations, models, textures, posers, resolvers, species } = useMonster(+monsterId);
+  const { pokemonNames } = useGitlab();
 
   const menuHeaders = useMemo<MenuHeader[] | undefined>(() => (addon && monster) ? ([
     {
@@ -48,7 +50,7 @@ export default function MonsterView() {
     <Route path="/resolvers" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={resolvers} entryComponent={FeatureEntry} />} />
     <Route path="/resolvers/:resolverId" element={<Loading loading={!(resolvers?.list && posers?.list && models?.list && textures?.list)} render={() => <ResolverEditor menuHeaders={menuHeaders} menuItems={menuItems} resolvers={resolvers} posers={posers.list!} models={models.list!} textures={textures.list!} />} />} />
     <Route path="/textures" element={<FeatureView menuHeaders={menuHeaders} menuItems={menuItems} feature={textures} entryComponent={ImageEntry} imageView />} />
-    <Route path="/species" element={<Loading loading={!(species?.list && monster)} render={() => <SpeciesEditor menuHeaders={menuHeaders} menuItems={menuItems} species={species} monster={monster!} />} />} />
+    <Route path="/species" element={<Loading loading={!(species?.list && monster && pokemonNames)} render={() => <SpeciesEditor menuHeaders={menuHeaders} menuItems={menuItems} species={species} monster={monster!} pokemonNames={pokemonNames} />} />} />
     <Route path="*" element={<Layout menuHeaders={menuHeaders} menu={menuItems} />} />
   </Routes>
 }
