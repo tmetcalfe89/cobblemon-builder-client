@@ -7,7 +7,7 @@ import ListItemLink from "./ListItemLink";
 export interface LayoutProps {
   menu?: MenuItem[];
   children?: React.ReactNode;
-  onMiniFormSubmit?: (name: string) => Promise<void> | void;
+  onMiniFormSubmit?: (name: string) => any;
   miniFormLabel?: string;
   menuHeaders?: MenuHeader[];
 }

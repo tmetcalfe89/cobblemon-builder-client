@@ -33,7 +33,7 @@ export default function FeatureView<T extends Feature>({
   );
 
   return (
-    <Layout menuHeaders={menuHeaders} menu={menuItems} onMiniFormSubmit={(name: string) => { feature?.createFromName?.(name) }}>
+    <Layout menuHeaders={menuHeaders} menu={menuItems} onMiniFormSubmit={feature?.createFromName}>
       <Stack>
         <FileInput onChange={handleFileInputChange} multiple={imageView} filter={imageView ? "image/*" : "application/json"} />
         {imageView ? <ImageList cols={5}>
