@@ -1,9 +1,10 @@
-import { CssBaseline, ThemeProvider } from "@mui/material"
+import { CssBaseline, Fab, ThemeProvider } from "@mui/material"
 import { HashRouter, Route, Routes } from "react-router-dom"
 import AccountView from "./views/AccountView";
 import AddonView from "./views/AddonView";
 import MonsterView from "./views/MonsterView";
 import darkTheme from "./theme";
+import { Coffee } from "@mui/icons-material";
 
 function App() {
   return (
@@ -15,6 +16,9 @@ function App() {
           <Route path="/addons/:addonId" element={<AddonView />} />
           <Route path="/addons/:addonId/monsters/:monsterId/*" element={<MonsterView />} />
         </Routes>
+        <Fab sx={{ position: "fixed", bottom: 5, right: 5 }} size="small" href="https://ko-fi.com/timsminecraftmods" target="_blank">
+          <Coffee />
+        </Fab>
       </ThemeProvider>
     </HashRouter>
   )
