@@ -91,21 +91,20 @@ export async function exportAddon(id: number) {
               model: !variation.model
                 ? undefined
                 : `cobblemon:${rawModels
-                    .find((model) => model.id === variation.model)
-                    ?.name.slice(0, -5)
-                    .toLowerCase()}`,
+                  .find((model) => model.id === variation.model)
+                  ?.name.slice(0, -5)
+                  .toLowerCase()}`,
               poser: !variation.poser
                 ? undefined
                 : `cobblemon:${rawPosers
-                    .find((poser) => poser.id === variation.poser)
-                    ?.name.toLowerCase()}`,
+                  .find((poser) => poser.id === variation.poser)
+                  ?.name.toLowerCase()}`,
               texture: !variation.texture
                 ? undefined
-                : `cobblemon:textures/pokemon/${
-                    rawTextures.find(
-                      (texture) => texture.id === variation.texture
-                    )?.name
-                  }`,
+                : `cobblemon:textures/pokemon/${rawTextures.find(
+                  (texture) => texture.id === variation.texture
+                )?.name
+                }`,
             })),
           },
           null,
@@ -122,6 +121,13 @@ export async function exportAddon(id: number) {
       );
     }
   }
+
+  zipped.file("pack.mcmeta", JSON.stringify({
+    "pack": {
+      "pack_format": 15,
+      "description": addon.name
+    }
+  }));
 
   const zipData = await zipped.generateAsync({ type: "blob" });
   saveAs(zipData, `${addon.name}.zip`);
