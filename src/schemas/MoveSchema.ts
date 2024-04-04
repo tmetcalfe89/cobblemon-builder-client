@@ -11,4 +11,15 @@ export const MoveSchema = yup.object().shape({
       return schema.strip();
     }
   }),
+}).transform((currVal) => {
+  if (typeof currVal === "string") {
+    const [method, move] = currVal.split(":");
+    const retval = {
+      name: move,
+      obtainment: isNaN(+method) ? method : "level",
+      level: isNaN(+method) ? undefined : +method
+    };
+    return retval;
+  }
+  return currVal;
 });

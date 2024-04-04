@@ -49,7 +49,7 @@ export const SpeciesFileSchema = yup.object().shape({
         yup.object().shape({
           percentage: yup.number().default(100).optional(),
           quantity: yup.number().optional(),
-          quantityRange: RangeSchema.optional(),
+          quantityRange: RangeSchema.default({ min: 1, max: 1 }).optional(),
           maxSelectableTimes: yup.number().default(1).optional(),
           item: yup.string().default("minecraft:fish").required(),
           nbt: yup.string().optional(),

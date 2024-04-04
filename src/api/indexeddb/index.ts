@@ -59,6 +59,9 @@ const deleteMonster = async (monsterId: number) => {
     animationsDb,
     modelsDb,
     texturesDb,
+    speciesDb,
+    resolversDb,
+    posersDb,
   ];
   for (const dbStore of monsterFeatureStores) {
     const featureEntries = await dbStore.getByField("monsterId", monsterId);
