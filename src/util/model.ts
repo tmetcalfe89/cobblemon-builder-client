@@ -9,7 +9,7 @@ export function checkForRootFolderAndFix(modelFile: ModelFile) {
       name: "root",
       pivot: [0, 0, 0],
     });
+    bonesWithoutParents.forEach((bone) => (bone.parent = "root"));
   }
-  bonesWithoutParents.forEach((bone) => (bone.parent = "root"));
   return clonedModelFile;
 }
